@@ -62,7 +62,7 @@ final class Editor {
 			echo '<li>' . esc_html( wp_date( 'd.m.Y H:i', (int) $v['zeit'] ) ) . ( $user ? ' · ' . esc_html( $user->display_name ) : '' );
 			echo ' <button type="button" class="button-link fwb-version-laden" data-version="' . (int) $i . '">laden</button></li>';
 		}
-		echo '</ul><p class="description">„Laden“ holt den Stand in den Editor. Erst mit „Aktualisieren“ wird er gespeichert.</p>';
+		echo '</ul><p class="description">„Laden“ holt den Stand in den Editor. Erst mit „Speichern“ wird er gespeichert; „Rückgängig“ nimmt das Laden zurück.</p>';
 	}
 
 	private static function daten_json( int $post_id, array $dok ): string {

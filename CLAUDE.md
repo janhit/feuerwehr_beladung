@@ -44,14 +44,14 @@ ansichten:  [ {id, name, foto_id, skizze, bereiche: [ {id, fach_id, x, y, b, h} 
 faecher:    [ {id, kuerzel, name,
                plaetze: [ {id, geraet (uid), menge, lage, notiz} ],
                bilder:  [ {id, titel, foto_id, skizze,
-                           markierungen: [ {id, platz_id, x, y, b, h} ],
+                           markierungen: [ {id, platz_id, x, y, b, h, notiz} ],   // mehrere je Gerät erlaubt
                            schalter:     [ {id, art: schwenk|auszug, ziel_bild_id, x, y} ]} ]} ]
 ```
 
 - Alle IDs sind fest und zufällig (`f_…`, `b_…`, `p_…` usw.). Lernstand, Export, QR-Codes und „Neu seit …“ hängen an diesen IDs.
 - Ein Fach hat mindestens ein Bild. Schalter zeigen auf ein **anderes** Bild desselben Fachs. Ob der Pfeil „öffnen“ oder „schließen“ zeigt, ergibt sich aus der Reihenfolge der Bilder.
 - Ein neues Bild übernimmt die Markierungen des aktuellen Bildes (nicht die Schalter).
-- Dasselbe Gerät darf in mehreren Fächern liegen, aber nur einmal pro Fach.
+- Dasselbe Gerät darf in mehreren Fächern liegen, aber nur einmal pro Fach (ein Platz). Ein Platz darf auf einem Bild **mehrere Markierungen** haben (gleiches Gerät an mehreren Stellen), jede mit eigener `notiz`.
 - Fahrzeuge ohne Fotos nutzen Skizzen aus `assets/skizzen/` (Liste in `Schema::SKIZZEN`).
 
 ## Dateien
@@ -73,7 +73,7 @@ includes/
   class-beispiel.php          Beispielfahrzeug
   class-einstellungen.php     Einstellungen (Admin)
   class-admin-menue.php       Untermenüs
-admin/js/editor/              ES-Module: main, modell (reine Logik), markierer, katalog
+admin/js/editor/              ES-Module: main (Oberfläche), modell (reine Logik: Rechtecke, Übertragen, offenePunkte, Verlauf), markierer, katalog
 admin/css/editor.css
 assets/skizzen/               SVG-Skizzen für Fahrzeuge ohne Fotos
 tests/php/                    PHPUnit gegen echtes WordPress (eigene Test-Datenbank!)
@@ -102,6 +102,13 @@ JS-Module werden über `wp_register_script_module` mit Abhängigkeiten registrie
 | 2 | Lernseite (Shortcode, vier Ebenen, Schwenkwand/Auszug, Suche, Steckbrief), Fotoschutz | offen |
 | 3 | Quiz, Lernstand (Opt-in, pseudonymisiert + verschlüsselt), Datenschutz-Werkzeuge | offen |
 | 5 | Export/Import eines Fahrzeugs samt Fotos und Katalog-Geräten | offen |
+
+## Editor (Bedienung)
+
+- Leiste oben (sticky): Status, Rückgängig/Wiederholen (`M.neuerVerlauf`, ganze JSON-Stände, Tippen wird zusammengefasst), „Speichern“ löst WordPress' `#save-post` (Entwurf) bzw. `#publish` aus.
+- „Was fehlt noch?“ = `M.offenePunkte(dok)`; jeder Punkt hat ein Sprungziel. Neue Prüfungen dort ergänzen und in `tests/js` testen.
+- Fach-Reiter: Foto links, Geräte rechts (Container-Query ab 760 px), sonst untereinander. Geräteliste behält ihre Scrollposition über `zeichnen()`.
+- `zeichnen()` baut alles neu; bei Eingabefeldern `gemerkt( false, gruppe )` nutzen, damit der Fokus bleibt.
 
 ## Entscheidungen (mit dem Auftraggeber abgestimmt)
 

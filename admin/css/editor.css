@@ -4,15 +4,160 @@
 	--fwb-rot: #c0392b;
 	--fwb-blau: #2271b1;
 	--fwb-gelb: #f0b849;
+	--fwb-gruen: #00a32a;
 	margin: 0 -12px -12px;
 }
+
+/* WordPress' „Sichtbarkeit: Öffentlich“ führt hier in die Irre (siehe Hinweis darunter). */
+.post-type-fwb_fahrzeug #visibility {
+	display: none;
+}
+
+.fwb-sichtbarkeit {
+	color: #50575e;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+.fwb-sichtbarkeit .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	vertical-align: -3px;
+	color: #8c8f94;
+}
+
+/* ---------------------------- Leiste oben ---------------------------- */
+
+.fwb-leiste {
+	position: sticky;
+	top: var(--wp-admin--admin-bar--height, 32px);
+	z-index: 30;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 6px 12px;
+	padding: 8px 12px;
+	background: #fff;
+	border-bottom: 1px solid #dcdcde;
+	box-shadow: 0 2px 4px rgb(0 0 0 / 4%);
+}
+
+.fwb-leiste-status {
+	color: #50575e;
+}
+
+.fwb-leiste-status.ist-ungespeichert {
+	color: #996800;
+	font-weight: 600;
+}
+
+.fwb-leiste-status.ist-ungespeichert::before {
+	content: "● ";
+	color: var(--fwb-gelb);
+}
+
+.fwb-leiste-knoepfe {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.fwb-speichern.ist-dringend {
+	box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--fwb-gelb);
+}
+
+@media (max-width: 782px) {
+	.fwb-leiste {
+		top: 0; /* Am Handy scrollt die Admin-Leiste mit. */
+		flex-wrap: nowrap;
+		padding: 6px 8px;
+	}
+
+	.fwb-leiste-status {
+		font-size: 12px;
+		line-height: 1.3;
+	}
+
+	.fwb-leiste-knoepfe {
+		flex-wrap: nowrap;
+	}
+
+	.fwb-lang {
+		display: none;
+	}
+
+	/* WordPress setzt hier overflow: hidden – das verhindert, dass die Leiste oben stehen bleibt.
+	   „clip“ schneidet genauso ab, lässt „sticky“ aber funktionieren. */
+	.post-type-fwb_fahrzeug #post-body,
+	.post-type-fwb_fahrzeug div#post-body.metabox-holder.columns-1 {
+		overflow-x: clip;
+		overflow-y: visible;
+	}
+}
+
+/* ---------------------------- Was fehlt noch? ---------------------------- */
+
+.fwb-fehlt {
+	margin: 0;
+	padding: 6px 12px;
+	background: #fcf9e8;
+	border-bottom: 1px solid #f0e6c2;
+}
+
+.fwb-fehlt summary {
+	cursor: pointer;
+	font-weight: 600;
+	padding: 2px 0;
+}
+
+.fwb-fehlt ul {
+	margin: 6px 0 4px 18px;
+	list-style: disc;
+}
+
+.fwb-fehlt li {
+	margin: 0 0 2px;
+}
+
+.fwb-fehlt .button-link {
+	text-align: left;
+}
+
+.fwb-fehlt-fertig {
+	background: #edfaef;
+	border-bottom-color: #c6e8cb;
+	color: #1a5e2a;
+	font-weight: 600;
+}
+
+.fwb-zahl {
+	display: inline-block;
+	min-width: 18px;
+	margin-left: 4px;
+	padding: 0 6px;
+	border-radius: 9px;
+	background: #dcdcde;
+	color: #1d2327;
+	font-size: 11px;
+	line-height: 18px;
+	text-align: center;
+	font-weight: 600;
+}
+
+.fwb-fehlt .fwb-zahl {
+	background: var(--fwb-gelb);
+}
+
+/* ---------------------------- Reiter ---------------------------- */
 
 .fwb-kopf {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 8px 16px;
-	padding: 8px 12px 0;
+	padding: 10px 12px 0;
 	border-bottom: 1px solid #dcdcde;
 }
 
@@ -38,51 +183,8 @@
 	border-bottom: 1px solid #fff;
 }
 
-.fwb-status {
-	margin: 0;
-	color: #996800;
-	font-weight: 600;
-}
-
 .fwb-inhalt {
 	padding: 12px;
-}
-
-.fwb-spalten {
-	display: grid;
-	grid-template-columns: minmax(180px, 220px) 1fr;
-	gap: 16px;
-	align-items: start;
-}
-
-/* Spalten dürfen schmaler werden als ihr Inhalt (sonst läuft am Handy alles rechts heraus). */
-.fwb-spalten > * {
-	min-width: 0;
-}
-
-@media (max-width: 960px) {
-	.fwb-spalten {
-		grid-template-columns: 1fr;
-	}
-
-	/* Fächerliste am Handy kompakt nebeneinander. */
-	.fwb-liste ul {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 4px;
-	}
-
-	.fwb-liste li {
-		margin: 0;
-	}
-
-	.fwb-liste-eintrag {
-		width: auto;
-	}
-
-	.fwb-liste-eintrag span {
-		display: none;
-	}
 }
 
 @media (max-width: 600px) {
@@ -96,51 +198,90 @@
 	}
 }
 
-.fwb-tabelle-rahmen {
-	/* Nur die Tabelle scrollt seitlich – sonst würde die Trefferliste der Suche abgeschnitten. */
-	overflow-x: auto;
-}
+/* ---------------------------- Chips (Fächer, Ansichten) ---------------------------- */
 
-.fwb-liste h3,
-.fwb-detail h3,
-.fwb-steckbrief h3 {
-	margin: 0 0 8px;
-}
-
-.fwb-liste ul {
-	margin: 0 0 8px;
-}
-
-.fwb-liste li {
-	margin: 0 0 4px;
-}
-
-.fwb-liste-eintrag {
+.fwb-chips {
 	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	margin: 0 0 12px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid #f0f0f1;
+}
+
+.fwb-chips-titel {
+	font-weight: 600;
+	margin-right: 2px;
+}
+
+.fwb-chip {
+	position: relative;
+	display: inline-flex;
 	flex-direction: column;
 	align-items: flex-start;
-	width: 100%;
-	padding: 6px 10px;
-	border: 1px solid #dcdcde;
-	background: #fff;
+	min-width: 56px;
+	padding: 4px 10px;
+	border: 1px solid #c3c4c7;
 	border-radius: 4px;
-	text-align: left;
+	background: #fff;
 	cursor: pointer;
+	line-height: 1.3;
+	text-align: left;
 }
 
-.fwb-liste-eintrag span {
-	color: #646970;
-	font-size: 12px;
+.fwb-chip:hover {
+	border-color: var(--fwb-blau);
 }
 
-.fwb-liste-eintrag.ist-aktiv {
+.fwb-chip.ist-aktiv {
 	border-color: var(--fwb-blau);
 	box-shadow: 0 0 0 1px var(--fwb-blau);
 	background: #f0f6fc;
 }
 
-.fwb-liste .fwb-neu {
-	width: 100%;
+.fwb-chip-unter {
+	color: #646970;
+	font-size: 11px;
+}
+
+.fwb-chip-warnung {
+	position: absolute;
+	top: -7px;
+	right: -7px;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	background: #d63638;
+	color: #fff;
+	font-size: 11px;
+	font-weight: 700;
+	line-height: 16px;
+	text-align: center;
+}
+
+.fwb-chip-neu {
+	align-self: stretch;
+}
+
+/* ---------------------------- Allgemein ---------------------------- */
+
+.fwb-tabelle-rahmen {
+	/* Nur die Tabelle scrollt seitlich – sonst würde die Trefferliste der Suche abgeschnitten. */
+	overflow-x: auto;
+}
+
+.fwb-detail h3,
+.fwb-steckbrief h3,
+.fwb-bilder h3,
+.fwb-geraete h3 {
+	margin: 0 0 8px;
+}
+
+.fwb-h-zusatz {
+	font-weight: 400;
+	color: #646970;
+	font-size: 13px;
 }
 
 .fwb-warnung {
@@ -188,11 +329,10 @@
 
 .fwb-klein {
 	font-size: 12px;
-	margin-left: 6px;
 }
 
 .fwb-schmal {
-	width: 6em;
+	width: 5em;
 }
 
 .fwb-mitte {
@@ -204,12 +344,12 @@
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 8px;
-	margin: 8px 0 12px;
+	margin: 4px 0 10px;
 }
 
 .fwb-foto-vorschau {
-	max-height: 60px;
-	max-width: 120px;
+	max-height: 48px;
+	max-width: 100px;
 	border-radius: 3px;
 	border: 1px solid #dcdcde;
 }
@@ -229,6 +369,11 @@
 	padding: 8px 10px;
 }
 
+.fwb-fach-knopf {
+	min-width: 40px;
+	font-weight: 600;
+}
+
 .fwb-auswahl {
 	margin: 8px 0;
 	padding: 8px 10px;
@@ -236,50 +381,183 @@
 	border-left: 4px solid var(--fwb-blau);
 }
 
-.fwb-plaetze table td {
-	vertical-align: middle;
+.fwb-auswahl .description {
+	margin: 6px 0 0;
 }
 
-.fwb-plaetze tr.ist-aktiv td {
+.fwb-auswahl-zeile {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	margin: 4px 0;
+}
+
+.fwb-notiz {
+	width: 14em;
+	max-width: 100%;
+}
+
+.fwb-frage {
+	margin: 0 0 8px;
+	padding: 8px 10px;
+	background: #fcf9e8;
+	border-left: 4px solid var(--fwb-gelb);
+}
+
+.fwb-leer {
+	max-width: 640px;
+	padding: 8px 0 16px;
+}
+
+.fwb-schritte {
+	margin: 8px 0 16px 20px;
+}
+
+.fwb-schritte li {
+	margin-bottom: 6px;
+}
+
+.fwb-leer-klein {
+	color: #646970;
+	font-style: italic;
+}
+
+/* ---------------------------- Fach: Foto neben Geräteliste ---------------------------- */
+
+.fwb-arbeit {
+	container-type: inline-size;
+}
+
+.fwb-arbeit-innen {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 20px;
+}
+
+.fwb-arbeit-innen > * {
+	min-width: 0;
+}
+
+/* Breit genug: Foto links, Geräte rechts – man muss zum Markieren nicht mehr scrollen. */
+@container (min-width: 760px) {
+	.fwb-arbeit-innen {
+		grid-template-columns: minmax(0, 3fr) minmax(280px, 2fr);
+		align-items: start;
+	}
+
+	.fwb-geraete {
+		position: sticky;
+		top: calc(var(--wp-admin--admin-bar--height, 32px) + 60px);
+		max-height: calc(100vh - 120px);
+		overflow-y: auto;
+		padding-right: 4px;
+	}
+}
+
+.fwb-geraete-liste {
+	margin: 0;
+}
+
+.fwb-geraet {
+	margin: 0 0 6px;
+	padding: 8px 10px;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background: #fff;
+}
+
+.fwb-geraet.ist-hervorgehoben {
+	border-color: var(--fwb-blau);
+	background: #f6fafd;
+}
+
+.fwb-geraet.ist-aktiv {
+	border-color: var(--fwb-blau);
+	box-shadow: 0 0 0 1px var(--fwb-blau);
+	background: #f0f6fc;
+}
+
+.fwb-geraet.ist-modus {
+	border-color: var(--fwb-gelb);
+	box-shadow: 0 0 0 1px var(--fwb-gelb);
 	background: #fcf9e8;
 }
 
-.fwb-plaetze table td:first-child .fwb-klein {
-	display: block;
-	margin-left: 0;
+.fwb-geraet-kopf {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 2px 8px;
 }
 
-.fwb-plaetze table th:nth-child(2),
-.fwb-plaetze table td:nth-child(2) {
-	width: 4.5em;
+.fwb-geraet-name {
+	padding: 0;
+	border: none;
+	background: none;
+	font-weight: 600;
+	font-size: 14px;
+	color: #1d2327;
+	cursor: pointer;
+	text-align: left;
 }
 
-.fwb-plaetze table td:nth-child(2) input {
-	width: 100%;
+.fwb-geraet-name:hover {
+	color: var(--fwb-blau);
+	text-decoration: underline;
 }
 
-.fwb-plaetze table td:nth-child(3) {
-	min-width: 12em;
+.fwb-markiert {
+	color: #50575e;
+	font-size: 12px;
 }
 
-.fwb-aktionen {
+.fwb-markiert .button-link {
+	font-size: 12px;
+}
+
+.fwb-geraet-felder {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 10px;
+	margin: 6px 0;
+	font-size: 12px;
+	color: #50575e;
+}
+
+.fwb-geraet-felder label {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.fwb-geraet-felder .fwb-breit {
+	flex: 1 1 180px;
+}
+
+.fwb-geraet-felder .fwb-breit input {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.fwb-geraet-aktionen {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 4px 8px;
-	min-width: 13em;
+	gap: 4px 10px;
 }
 
 .fwb-hinzufuegen {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 8px;
-	margin: 10px 0 4px;
+	margin: 0 0 4px;
 }
 
-.fwb-plaetze > .description {
-	margin: 0 0 20px;
+.fwb-hinzufuegen .regular-text {
+	width: 100%;
+}
+
+.fwb-geraete > .description {
+	margin: 0 0 10px;
 }
 
 .fwb-suche {
@@ -325,6 +603,14 @@
 	background: var(--fwb-blau);
 	border-color: var(--fwb-blau);
 	color: #fff;
+}
+
+.fwb-felder input[type="text"] {
+	min-width: 120px;
+}
+
+.fwb-versionen li {
+	margin-bottom: 4px;
 }
 
 /* ---------------------------- Markierer ---------------------------- */
@@ -378,6 +664,17 @@
 	border-color: var(--fwb-blau);
 	background: rgb(34 113 177 / 18%);
 	z-index: 2;
+}
+
+.fwb-rahmen.ist-hervorgehoben {
+	border-color: var(--fwb-blau);
+	border-width: 3px;
+	background: rgb(34 113 177 / 22%);
+	z-index: 2;
+}
+
+.fwb-rahmen.ist-hervorgehoben > .fwb-rahmen-text {
+	background: var(--fwb-blau);
 }
 
 .fwb-rahmen.ist-neu {
@@ -446,10 +743,3 @@
 	background: var(--fwb-blau);
 }
 
-.fwb-felder input[type="text"] {
-	min-width: 120px;
-}
-
-.fwb-versionen li {
-	margin-bottom: 4px;
-}

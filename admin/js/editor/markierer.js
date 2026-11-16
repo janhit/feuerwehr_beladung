@@ -71,6 +71,10 @@ export function markierer( optionen ) {
 		const rahmen = document.createElement( 'div' );
 		rahmen.className = 'fwb-rahmen' + ( r.id === auswahl ? ' ist-ausgewaehlt' : '' ) + ( r.klasse ? ' ' + r.klasse : '' );
 		rahmen.dataset.id = r.id;
+		if ( r.gruppe ) {
+			// z. B. das Gerät: Liste und Foto heben so alle Stellen gemeinsam hervor.
+			rahmen.dataset.gruppe = r.gruppe;
+		}
 		setzeRechteck( rahmen, r );
 		const text = document.createElement( 'span' );
 		text.className = 'fwb-rahmen-text';
@@ -214,11 +218,19 @@ export function markierer( optionen ) {
 			return;
 		}
 		e.preventDefault();
+		// Anzeige und gemerkte Daten sofort nachführen, damit mehrere Tastendrücke sich addieren.
 		const d = gewaehlt.daten;
 		if ( 'b' in d ) {
-			beiAendern( auswahl, verschieben( d, bewegung[ 0 ], bewegung[ 1 ] ) );
+			const neu = verschieben( d, bewegung[ 0 ], bewegung[ 1 ] );
+			Object.assign( d, neu );
+			setzeRechteck( gewaehlt.element, neu );
+			beiAendern( auswahl, neu );
 		} else {
-			beiPunktAendern( auswahl, punktBegrenzen( { x: d.x + bewegung[ 0 ], y: d.y + bewegung[ 1 ] } ) );
+			const neu = punktBegrenzen( { x: d.x + bewegung[ 0 ], y: d.y + bewegung[ 1 ] } );
+			Object.assign( d, neu );
+			gewaehlt.element.style.left = neu.x + '%';
+			gewaehlt.element.style.top = neu.y + '%';
+			beiPunktAendern( auswahl, neu );
 		}
 	} );
 
