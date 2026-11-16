@@ -1,0 +1,450 @@
+/* Backend-Editor "Beladung" */
+
+.fwb-editor {
+	--fwb-rot: #c0392b;
+	--fwb-blau: #2271b1;
+	--fwb-gelb: #f0b849;
+	margin: 0 -12px -12px;
+}
+
+.fwb-kopf {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 16px;
+	padding: 8px 12px 0;
+	border-bottom: 1px solid #dcdcde;
+}
+
+.fwb-reiter {
+	display: flex;
+	gap: 4px;
+}
+
+.fwb-reiter-knopf {
+	padding: 8px 14px;
+	border: 1px solid #dcdcde;
+	border-bottom: none;
+	background: #f6f7f7;
+	cursor: pointer;
+	border-radius: 4px 4px 0 0;
+	font-size: 14px;
+	margin-bottom: -1px;
+}
+
+.fwb-reiter-knopf.ist-aktiv {
+	background: #fff;
+	font-weight: 600;
+	border-bottom: 1px solid #fff;
+}
+
+.fwb-status {
+	margin: 0;
+	color: #996800;
+	font-weight: 600;
+}
+
+.fwb-inhalt {
+	padding: 12px;
+}
+
+.fwb-spalten {
+	display: grid;
+	grid-template-columns: minmax(180px, 220px) 1fr;
+	gap: 16px;
+	align-items: start;
+}
+
+/* Spalten dürfen schmaler werden als ihr Inhalt (sonst läuft am Handy alles rechts heraus). */
+.fwb-spalten > * {
+	min-width: 0;
+}
+
+@media (max-width: 960px) {
+	.fwb-spalten {
+		grid-template-columns: 1fr;
+	}
+
+	/* Fächerliste am Handy kompakt nebeneinander. */
+	.fwb-liste ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px;
+	}
+
+	.fwb-liste li {
+		margin: 0;
+	}
+
+	.fwb-liste-eintrag {
+		width: auto;
+	}
+
+	.fwb-liste-eintrag span {
+		display: none;
+	}
+}
+
+@media (max-width: 600px) {
+	.fwb-reiter-knopf {
+		padding: 6px 8px;
+		font-size: 13px;
+	}
+
+	.fwb-zeile-rechts {
+		margin-left: 0;
+	}
+}
+
+.fwb-plaetze {
+	overflow-x: auto;
+}
+
+.fwb-liste h3,
+.fwb-detail h3,
+.fwb-steckbrief h3 {
+	margin: 0 0 8px;
+}
+
+.fwb-liste ul {
+	margin: 0 0 8px;
+}
+
+.fwb-liste li {
+	margin: 0 0 4px;
+}
+
+.fwb-liste-eintrag {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	width: 100%;
+	padding: 6px 10px;
+	border: 1px solid #dcdcde;
+	background: #fff;
+	border-radius: 4px;
+	text-align: left;
+	cursor: pointer;
+}
+
+.fwb-liste-eintrag span {
+	color: #646970;
+	font-size: 12px;
+}
+
+.fwb-liste-eintrag.ist-aktiv {
+	border-color: var(--fwb-blau);
+	box-shadow: 0 0 0 1px var(--fwb-blau);
+	background: #f0f6fc;
+}
+
+.fwb-liste .fwb-neu {
+	width: 100%;
+}
+
+.fwb-warnung {
+	color: #b32d2e !important;
+	font-weight: 600;
+}
+
+.fwb-zeile {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 16px;
+	align-items: flex-end;
+}
+
+.fwb-zeile .fwb-feld {
+	flex: 1 1 200px;
+}
+
+.fwb-zeile-rechts {
+	margin-left: auto;
+	padding-bottom: 14px;
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.fwb-feld .regular-text {
+	max-width: 100%;
+}
+
+.fwb-feld label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 2px;
+}
+
+.fwb-ordnen {
+	display: inline-flex;
+	gap: 2px;
+}
+
+.fwb-gefahr {
+	color: #b32d2e !important;
+}
+
+.fwb-klein {
+	font-size: 12px;
+	margin-left: 6px;
+}
+
+.fwb-schmal {
+	width: 6em;
+}
+
+.fwb-mitte {
+	text-align: center;
+}
+
+.fwb-foto-feld {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	margin: 8px 0 12px;
+}
+
+.fwb-foto-vorschau {
+	max-height: 60px;
+	max-width: 120px;
+	border-radius: 3px;
+	border: 1px solid #dcdcde;
+}
+
+.fwb-werkzeug,
+.fwb-tipp {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	margin: 8px 0;
+}
+
+.fwb-tipp {
+	background: #fcf9e8;
+	border-left: 4px solid var(--fwb-gelb);
+	padding: 8px 10px;
+}
+
+.fwb-auswahl {
+	margin: 8px 0;
+	padding: 8px 10px;
+	background: #f0f6fc;
+	border-left: 4px solid var(--fwb-blau);
+}
+
+.fwb-plaetze table td {
+	vertical-align: middle;
+}
+
+.fwb-plaetze tr.ist-aktiv td {
+	background: #fcf9e8;
+}
+
+.fwb-plaetze table td:first-child .fwb-klein {
+	display: block;
+	margin-left: 0;
+}
+
+.fwb-plaetze table th:nth-child(2),
+.fwb-plaetze table td:nth-child(2) {
+	width: 4.5em;
+}
+
+.fwb-plaetze table td:nth-child(2) input {
+	width: 100%;
+}
+
+.fwb-plaetze table td:nth-child(3) {
+	min-width: 12em;
+}
+
+.fwb-aktionen {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 8px;
+	min-width: 13em;
+}
+
+.fwb-hinzufuegen {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	margin: 10px 0 20px;
+}
+
+.fwb-suche {
+	position: relative;
+}
+
+.fwb-suche-treffer {
+	position: absolute;
+	z-index: 20;
+	left: 0;
+	right: 0;
+	min-width: 260px;
+	margin: 2px 0 0;
+	padding: 4px 0;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	box-shadow: 0 3px 8px rgb(0 0 0 / 15%);
+	max-height: 260px;
+	overflow: auto;
+}
+
+.fwb-suche-treffer li {
+	margin: 0;
+	padding: 4px 10px;
+}
+
+.fwb-bild-reiter {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	margin: 8px 0;
+}
+
+.fwb-bild-knopf {
+	padding: 4px 10px;
+	border: 1px solid #c3c4c7;
+	background: #f6f7f7;
+	border-radius: 999px;
+	cursor: pointer;
+}
+
+.fwb-bild-knopf.ist-aktiv {
+	background: var(--fwb-blau);
+	border-color: var(--fwb-blau);
+	color: #fff;
+}
+
+/* ---------------------------- Markierer ---------------------------- */
+
+.fwb-buehne {
+	position: relative;
+	width: 100%;
+	max-width: 1100px;
+	background: #f0f0f1;
+	border: 1px solid #c3c4c7;
+	user-select: none;
+	touch-action: none;
+	overflow: hidden;
+	outline-offset: 2px;
+}
+
+.fwb-buehne.fwb-zeichnen,
+.fwb-buehne.fwb-punkt-setzen {
+	cursor: crosshair;
+	box-shadow: 0 0 0 3px var(--fwb-gelb);
+}
+
+.fwb-buehne-bild {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: fill;
+	pointer-events: none;
+}
+
+.fwb-buehne-leer {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	color: #646970;
+	font-size: 15px;
+	background: repeating-linear-gradient(45deg, #f6f7f7, #f6f7f7 12px, #eceef0 12px, #eceef0 24px);
+}
+
+.fwb-rahmen {
+	position: absolute;
+	box-sizing: border-box;
+	border: 2px solid var(--fwb-rot);
+	background: rgb(192 57 43 / 12%);
+	cursor: move;
+}
+
+.fwb-rahmen.ist-ausgewaehlt {
+	border-color: var(--fwb-blau);
+	background: rgb(34 113 177 / 18%);
+	z-index: 2;
+}
+
+.fwb-rahmen.ist-neu {
+	border-style: dashed;
+	border-color: var(--fwb-blau);
+}
+
+.fwb-rahmen-text {
+	position: absolute;
+	left: 0;
+	top: 0;
+	max-width: 100%;
+	padding: 1px 4px;
+	background: var(--fwb-rot);
+	color: #fff;
+	font-size: 11px;
+	line-height: 1.4;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	pointer-events: none;
+}
+
+.ist-ausgewaehlt > .fwb-rahmen-text {
+	background: var(--fwb-blau);
+}
+
+.fwb-griff {
+	position: absolute;
+	width: 14px;
+	height: 14px;
+	background: #fff;
+	border: 2px solid var(--fwb-blau);
+	border-radius: 2px;
+	display: none;
+}
+
+.ist-ausgewaehlt > .fwb-griff {
+	display: block;
+}
+
+.fwb-griff-nw { left: -8px; top: -8px; cursor: nwse-resize; }
+.fwb-griff-ne { right: -8px; top: -8px; cursor: nesw-resize; }
+.fwb-griff-sw { left: -8px; bottom: -8px; cursor: nesw-resize; }
+.fwb-griff-se { right: -8px; bottom: -8px; cursor: nwse-resize; }
+
+.fwb-punkt {
+	position: absolute;
+	transform: translate(-50%, -50%);
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	background: #1d2327;
+	color: #fff;
+	border: 3px solid #fff;
+	box-shadow: 0 1px 4px rgb(0 0 0 / 40%);
+	display: grid;
+	place-items: center;
+	font-size: 20px;
+	line-height: 1;
+	cursor: move;
+	z-index: 3;
+}
+
+.fwb-punkt.ist-ausgewaehlt {
+	background: var(--fwb-blau);
+}
+
+.fwb-felder input[type="text"] {
+	min-width: 120px;
+}
+
+.fwb-versionen li {
+	margin-bottom: 4px;
+}

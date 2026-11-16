@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><style>.k{fill:#c8102e}.d{fill:#9aa3ad}.t{fill:#e9edf1;stroke:#5c6670;stroke-width:4}.r{stroke:#b8c0c8;stroke-width:3}.s{fill:#3a3f45}.w{fill:#cfe3f2;stroke:#5c6670;stroke-width:3}.l{font:700 34px system-ui,sans-serif;fill:#1d2327;text-anchor:middle}.h{font:600 26px system-ui,sans-serif;fill:#5c6670;text-anchor:middle}</style><rect width="1200" height="400" fill="#f6f7f8"/><g transform="translate(1200 0) scale(-1 1)"><rect class="k" x="300" y="60" width="850" height="260" rx="10"/><path class="k" d="M300 320V90H120Q60 90 50 160L40 320Z"/><path class="w" d="M110 110H280V200H70Q78 125 110 110Z"/><rect class="d" x="30" y="300" width="1130" height="26" rx="4"/><rect class="t" x="320" y="80" width="200" height="220" rx="6"/>
+<line class="r" x1="328" x2="512" y1="110" y2="110"/>
+<line class="r" x1="328" x2="512" y1="140" y2="140"/>
+<line class="r" x1="328" x2="512" y1="170" y2="170"/>
+<line class="r" x1="328" x2="512" y1="200" y2="200"/>
+<line class="r" x1="328" x2="512" y1="230" y2="230"/>
+<line class="r" x1="328" x2="512" y1="260" y2="260"/>
+<rect class="t" x="540" y="80" width="280" height="220" rx="6"/>
+<line class="r" x1="548" x2="812" y1="110" y2="110"/>
+<line class="r" x1="548" x2="812" y1="140" y2="140"/>
+<line class="r" x1="548" x2="812" y1="170" y2="170"/>
+<line class="r" x1="548" x2="812" y1="200" y2="200"/>
+<line class="r" x1="548" x2="812" y1="230" y2="230"/>
+<line class="r" x1="548" x2="812" y1="260" y2="260"/>
+<rect class="t" x="840" y="80" width="290" height="220" rx="6"/>
+<line class="r" x1="848" x2="1122" y1="110" y2="110"/>
+<line class="r" x1="848" x2="1122" y1="140" y2="140"/>
+<line class="r" x1="848" x2="1122" y1="170" y2="170"/>
+<line class="r" x1="848" x2="1122" y1="200" y2="200"/>
+<line class="r" x1="848" x2="1122" y1="230" y2="230"/>
+<line class="r" x1="848" x2="1122" y1="260" y2="260"/><circle class="s" cx="170" cy="335" r="42"/><circle class="s" cx="800" cy="335" r="42"/><circle class="s" cx="1000" cy="335" r="42"/></g><text class="l" x="215" y="200">G6</text><text class="l" x="520" y="200">G4</text><text class="l" x="780" y="200">G2</text><text class="h" x="600" y="390">Skizze Beifahrerseite</text></svg>

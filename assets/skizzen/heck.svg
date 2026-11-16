@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><style>.k{fill:#c8102e}.d{fill:#9aa3ad}.t{fill:#e9edf1;stroke:#5c6670;stroke-width:4}.r{stroke:#b8c0c8;stroke-width:3}.s{fill:#3a3f45}.w{fill:#cfe3f2;stroke:#5c6670;stroke-width:3}.l{font:700 34px system-ui,sans-serif;fill:#1d2327;text-anchor:middle}.h{font:600 26px system-ui,sans-serif;fill:#5c6670;text-anchor:middle}</style><rect width="1200" height="400" fill="#f6f7f8"/><rect class="k" x="350" y="30" width="500" height="310" rx="10"/><rect class="t" x="380" y="60" width="440" height="240" rx="6"/><line class="r" x1="390" x2="810" y1="90" y2="90"/>
+<line class="r" x1="390" x2="810" y1="120" y2="120"/>
+<line class="r" x1="390" x2="810" y1="150" y2="150"/>
+<line class="r" x1="390" x2="810" y1="180" y2="180"/>
+<line class="r" x1="390" x2="810" y1="210" y2="210"/>
+<line class="r" x1="390" x2="810" y1="240" y2="240"/>
+<line class="r" x1="390" x2="810" y1="270" y2="270"/><rect class="d" x="340" y="330" width="520" height="22" rx="4"/><rect class="s" x="380" y="345" width="90" height="40" rx="8"/><rect class="s" x="730" y="345" width="90" height="40" rx="8"/><text class="l" x="600" y="190">GR</text><text class="h" x="1000" y="390">Skizze Heck</text></svg>

@@ -1,0 +1,9 @@
+{
+	"name": "feuerwehr-beladung",
+	"private": true,
+	"type": "module",
+	"description": "Nur für Entwicklung und Tests. Das Plugin braucht keinen Build-Schritt.",
+	"scripts": {
+		"test": "node --test tests/js/*.test.js"
+	}
+}
