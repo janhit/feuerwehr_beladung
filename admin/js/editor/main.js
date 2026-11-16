@@ -534,12 +534,22 @@ function starten( daten ) {
 			{ class: 'fwb-plaetze' },
 			el( 'h3', { text: 'Geräte in ' + fach.kuerzel } ),
 			el(
-				'table',
-				{ class: 'widefat striped' },
-				el( 'thead', {}, el( 'tr', {}, el( 'th', { text: 'Gerät' } ), el( 'th', { text: 'Menge' } ), el( 'th', { text: 'Lage im Fach' } ), el( 'th', { text: 'Markiert' } ), el( 'th', { text: '' } ) ) ),
-				el( 'tbody', {}, zeilen.length ? zeilen : el( 'tr', {}, el( 'td', { colSpan: 5, text: 'Noch keine Geräte in diesem Fach.' } ) ) )
+				'div',
+				{ class: 'fwb-tabelle-rahmen' },
+				el(
+					'table',
+					{ class: 'widefat striped' },
+					el( 'thead', {}, el( 'tr', {}, el( 'th', { text: 'Gerät' } ), el( 'th', { text: 'Menge' } ), el( 'th', { text: 'Lage im Fach' } ), el( 'th', { text: 'Markiert' } ), el( 'th', { text: '' } ) ) ),
+					el( 'tbody', {}, zeilen.length ? zeilen : el( 'tr', {}, el( 'td', { colSpan: 5, text: 'Noch keine Geräte in diesem Fach.' } ) ) )
+				)
 			),
-			el( 'div', { class: 'fwb-hinzufuegen' }, el( 'strong', { text: 'Gerät hinzufügen: ' } ), suche, el( 'a', { href: daten.links.katalog, target: '_blank', class: 'fwb-klein', text: 'Gerätekatalog öffnen' } ) )
+			el( 'div', { class: 'fwb-hinzufuegen' }, el( 'strong', { text: 'Gerät hinzufügen: ' } ), suche ),
+			el(
+				'p',
+				{ class: 'description' },
+				'Namen eintippen, dann ein vorhandenes Gerät antippen oder mit „… neu im Katalog anlegen“ ein neues anlegen. Danach auf dem Foto ein Rechteck um das Gerät ziehen. ',
+				el( 'a', { href: daten.links.katalog, target: '_blank', text: 'Beschreibungen im Gerätekatalog bearbeiten' } )
+			)
 		);
 	}
 

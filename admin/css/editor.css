@@ -96,7 +96,8 @@
 	}
 }
 
-.fwb-plaetze {
+.fwb-tabelle-rahmen {
+	/* Nur die Tabelle scrollt seitlich – sonst würde die Trefferliste der Suche abgeschnitten. */
 	overflow-x: auto;
 }
 
@@ -274,7 +275,11 @@
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 8px;
-	margin: 10px 0 20px;
+	margin: 10px 0 4px;
+}
+
+.fwb-plaetze > .description {
+	margin: 0 0 20px;
 }
 
 .fwb-suche {
