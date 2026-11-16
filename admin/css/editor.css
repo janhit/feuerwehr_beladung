@@ -743,3 +743,28 @@
 	background: var(--fwb-blau);
 }
 
+
+/* ---------------------------- Fotoschutz ---------------------------- */
+
+.fwb-schutz {
+	font-size: 12px;
+	color: #50575e;
+}
+
+.fwb-schutz.ist-geschuetzt {
+	color: #1a5e2a;
+}
+
+.fwb-schutz.ist-offen {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px;
+	flex-basis: 100%;
+	color: #8a2424;
+	font-weight: 600;
+}
+
+.fwb-schutz.ist-offen .description {
+	font-weight: 400;
+}

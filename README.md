@@ -3,8 +3,8 @@
 WordPress-Plugin für Freiwillige Feuerwehren: Mitglieder lernen zu Hause oder unterwegs
 am Handy, welches Gerät in welchem Gerätefach der Fahrzeuge liegt.
 
-> **Stand:** in Entwicklung. Version 0.1 enthält das Backend (Fahrzeuge, Gerätekatalog,
-> Editor, Beispielfahrzeug). Die Lernseite für Mitglieder folgt.
+> **Stand:** in Entwicklung. Backend (Fahrzeuge, Gerätekatalog, Editor) und Lernseite
+> sind da; Quiz und Lernfortschritt folgen.
 
 ## Was das Plugin kann (Version 0.1)
 
@@ -16,11 +16,29 @@ am Handy, welches Gerät in welchem Gerätefach der Fahrzeuge liegt.
 - **Protokoll**: wer hat wann was geändert. **Frühere Stände** eines Fahrzeugs lassen sich wiederherstellen.
 - **Beispielfahrzeug** per Knopf, auch ohne Fotos.
 
+## Lernseite
+
+Den Shortcode `[feuerwehr_beladung]` in eine Seite einfügen (oder unter **Beladung →
+Einstellungen** „Lernseite als Entwurf anlegen“). Angemeldete Mitglieder sehen dort die
+Fahrzeuge, tippen Fächer an und lernen, welches Gerät wo liegt. Wer nicht angemeldet ist,
+sieht nur einen Anmeldeknopf.
+
+## Fotoschutz
+
+Fotos, die im Fahrzeug-Editor hochgeladen werden, verschiebt das Plugin in einen eigenen
+Ordner und liefert sie nur an angemeldete Nutzer aus. Läuft die Seite auf **nginx**
+(z. B. openresty), bitte beim Hoster diese Regel ergänzen lassen – der Selbsttest unter
+**Beladung → Einstellungen** zeigt, ob sie nötig ist:
+
+```
+location ^~ /wp-content/uploads/fwb-geschuetzt/ { deny all; }
+```
+
 ## Rechte
 
 - Bearbeiten: Redakteure und Administratoren.
 - Einstellungen: nur Administratoren.
-- Mitglieder (alle angemeldeten Nutzer) sehen später die Lernseite.
+- Lernen: alle angemeldeten Nutzer (nur veröffentlichte Fahrzeuge).
 
 ## Installation
 

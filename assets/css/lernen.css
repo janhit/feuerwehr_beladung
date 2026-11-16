@@ -1,0 +1,851 @@
+/* Lernseite "Beladung lernen" – keine externen Schriften, nur Systemschrift. */
+
+.fwb-lernen,
+.fwb-l-vollbild {
+	--fwb-rot: #c8102e;
+	--fwb-gelb: #ffd400;
+	--fwb-dunkel: #15171a;
+	--fwb-grau: #5f6368;
+	--fwb-rand: #dcdfe3;
+	--fwb-schrift: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-family: var(--fwb-schrift);
+	box-sizing: border-box;
+}
+
+.fwb-lernen *,
+.fwb-lernen *::before,
+.fwb-lernen *::after,
+.fwb-l-vollbild *,
+.fwb-l-vollbild *::before,
+.fwb-l-vollbild *::after {
+	box-sizing: border-box;
+}
+
+/* Knöpfe gegen Theme-Stile absichern */
+.fwb-lernen button,
+.fwb-l-vollbild button {
+	font: inherit;
+	letter-spacing: normal;
+	text-transform: none;
+	text-decoration: none;
+	text-shadow: none;
+	margin: 0;
+	min-height: 0;
+	min-width: 0;
+	line-height: 1.25;
+	border-radius: 0;
+	box-shadow: none;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.fwb-lernen button:focus-visible,
+.fwb-l-vollbild button:focus-visible,
+.fwb-l-vollbild input:focus-visible {
+	outline: 3px solid var(--fwb-gelb);
+	outline-offset: 2px;
+}
+
+html.fwb-l-offen,
+html.fwb-l-offen body {
+	overflow: hidden !important;
+	overscroll-behavior: none;
+}
+
+.fwb-l-laedt,
+.fwb-l-meldung {
+	padding: 16px;
+	color: inherit;
+}
+
+.fwb-l-meldung p {
+	margin: 0 0 12px;
+}
+
+/* ------------------------------ Ebene 1: Übersicht ------------------------------ */
+
+.fwb-l-karten {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 16px;
+	margin: 0 0 1em;
+}
+
+.fwb-l-karte {
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	border: 1px solid var(--fwb-rand);
+	border-radius: 12px;
+	overflow: hidden;
+	background: #fff;
+	color: #1d1d1f;
+	text-align: left;
+	transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.fwb-l-karte:hover {
+	box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
+	transform: translateY(-2px);
+}
+
+.fwb-l-karte-bild {
+	display: block;
+	aspect-ratio: 16 / 9;
+	background: #e9ecef;
+	overflow: hidden;
+}
+
+.fwb-l-karte-bild img,
+.fwb-l-karte-bild .fwb-l-ohne-foto {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.fwb-l-karte-text {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 12px 14px 14px;
+}
+
+.fwb-l-karte-titel {
+	font-size: 1.2em;
+	color: var(--fwb-rot);
+}
+
+.fwb-l-entwurf {
+	align-self: flex-start;
+	padding: 1px 8px;
+	border-radius: 99px;
+	background: #fff4ce;
+	color: #6b5000;
+	font-size: 0.8em;
+}
+
+.fwb-l-eckdaten {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 12px;
+	font-weight: 600;
+}
+
+.fwb-l-eckdaten small {
+	font-weight: 400;
+	color: var(--fwb-grau);
+}
+
+.fwb-l-kurz {
+	color: #3c4043;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.fwb-l-zahlen {
+	color: var(--fwb-grau);
+	font-size: 0.9em;
+}
+
+.fwb-l-ohne-foto {
+	display: grid;
+	place-items: center;
+	color: #777;
+	background: repeating-linear-gradient(45deg, #eceef0, #eceef0 12px, #e3e6e9 12px, #e3e6e9 24px);
+}
+
+/* ------------------------------ Vollbild ------------------------------ */
+
+.fwb-l-vollbild {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	display: flex;
+	flex-direction: column;
+	background: var(--fwb-dunkel);
+	color: #fff;
+	font-size: 16px;
+	line-height: 1.4;
+	height: 100vh;
+	height: 100dvh;
+}
+
+.fwb-l-kopf {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-height: 52px;
+	padding: 4px 8px;
+	padding-top: calc(4px + env(safe-area-inset-top));
+	background: #0b0c0e;
+	border-bottom: 3px solid var(--fwb-rot);
+	flex: none;
+}
+
+.fwb-l-zurueck {
+	width: 44px;
+	height: 44px;
+	flex: none;
+	border: none;
+	border-radius: 50%;
+	background: transparent;
+	color: #fff;
+	font-size: 34px;
+	line-height: 1;
+	display: grid;
+	place-items: center;
+	padding: 0 0 4px;
+}
+
+.fwb-l-zurueck:hover {
+	background: rgb(255 255 255 / 12%);
+}
+
+.fwb-l-titel {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.fwb-l-titel strong {
+	font-size: 1.1em;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.fwb-l-titel span {
+	font-size: 0.8em;
+	color: #b8bcc2;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.fwb-l-aktionen {
+	display: flex;
+	gap: 6px;
+	flex: none;
+}
+
+.fwb-l-aktion {
+	min-height: 40px;
+	padding: 6px 12px;
+	border: 1px solid rgb(255 255 255 / 30%);
+	border-radius: 99px;
+	background: transparent;
+	color: #fff;
+	white-space: nowrap;
+}
+
+.fwb-l-aktion:hover,
+.fwb-l-aktion[aria-pressed="true"] {
+	background: rgb(255 255 255 / 14%);
+}
+
+@media (max-width: 520px) {
+	.fwb-l-lang {
+		display: none;
+	}
+
+	.fwb-l-aktion {
+		min-width: 44px;
+		padding: 6px 10px;
+	}
+}
+
+/* Reiter für die Ansichten */
+.fwb-l-reiter {
+	display: flex;
+	gap: 4px;
+	padding: 8px;
+	overflow-x: auto;
+	flex: none;
+	scrollbar-width: none;
+}
+
+.fwb-l-reiter-knopf {
+	flex: none;
+	padding: 8px 14px;
+	border: 1px solid rgb(255 255 255 / 25%);
+	border-radius: 99px;
+	background: transparent;
+	color: #fff;
+}
+
+.fwb-l-reiter-knopf.ist-aktiv {
+	background: #fff;
+	color: var(--fwb-dunkel);
+	font-weight: 700;
+}
+
+.fwb-l-mitte {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+}
+
+.fwb-l-fuss {
+	flex: none;
+	padding: 6px 10px;
+	padding-bottom: calc(8px + env(safe-area-inset-bottom));
+}
+
+.fwb-l-tipp {
+	margin: 0 0 6px;
+	color: #b8bcc2;
+	font-size: 0.9em;
+}
+
+.fwb-l-faecher,
+.fwb-l-bilder,
+.fwb-l-auch,
+.fwb-l-orte {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+}
+
+.fwb-l-faecher-titel {
+	color: #b8bcc2;
+	font-size: 0.9em;
+}
+
+.fwb-l-chip {
+	min-height: 38px;
+	min-width: 44px;
+	padding: 6px 12px;
+	border: 1px solid rgb(255 255 255 / 30%);
+	border-radius: 8px;
+	background: rgb(255 255 255 / 8%);
+	color: #fff;
+}
+
+.fwb-l-chip:hover {
+	background: rgb(255 255 255 / 18%);
+}
+
+.fwb-l-chip.ist-aktiv {
+	background: var(--fwb-gelb);
+	border-color: var(--fwb-gelb);
+	color: #111;
+	font-weight: 700;
+}
+
+/* ------------------------------ Bühne (Foto mit Flächen) ------------------------------ */
+
+.fwb-l-rahmen {
+	flex: 1;
+	min-width: 0;
+	min-height: 0;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.fwb-l-rahmen.ist-wischen {
+	justify-content: flex-start;
+	overflow-x: auto;
+	overflow-y: hidden;
+	-webkit-overflow-scrolling: touch;
+}
+
+.fwb-l-rahmen.ist-wischen::after {
+	content: "← wischen →";
+	position: sticky;
+	left: 50%;
+	align-self: flex-end;
+	margin-left: -60px;
+	margin-bottom: 8px;
+	padding: 2px 10px;
+	border-radius: 99px;
+	background: rgb(0 0 0 / 60%);
+	font-size: 12px;
+	white-space: nowrap;
+	pointer-events: none;
+}
+
+.fwb-l-bild {
+	position: relative;
+	flex: none;
+	max-width: none;
+	overflow: hidden;
+	background: #2a2d31;
+}
+
+.fwb-l-bild > img,
+.fwb-l-bild > .fwb-l-ohne-foto {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	object-fit: fill;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+
+.fwb-l-blende {
+	animation: fwb-l-einblenden 0.35s ease-out;
+}
+
+@keyframes fwb-l-einblenden {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+.fwb-l-flaeche {
+	position: absolute;
+	padding: 0;
+	border: 2px solid var(--fwb-gelb);
+	border-radius: 4px;
+	background: rgb(255 212 0 / 12%);
+	color: #111;
+	z-index: 2;
+	transition: background 0.15s, opacity 0.2s;
+}
+
+.fwb-l-flaeche:hover,
+.fwb-l-flaeche:focus-visible {
+	background: rgb(255 212 0 / 32%);
+}
+
+.fwb-l-flaeche-text {
+	position: absolute;
+	left: -2px;
+	top: -2px;
+	max-width: calc(100% + 4px);
+	padding: 2px 6px;
+	border-radius: 4px 0 4px 0;
+	background: var(--fwb-gelb);
+	color: #111;
+	font-size: 13px;
+	font-weight: 700;
+	line-height: 1.3;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	pointer-events: none;
+}
+
+.fwb-l-flaeche.ist-fach .fwb-l-flaeche-text {
+	font-size: 15px;
+}
+
+.fwb-l-flaeche.ist-geraet {
+	border-color: #ff5a4f;
+	background: rgb(255 90 79 / 14%);
+}
+
+.fwb-l-flaeche.ist-geraet .fwb-l-flaeche-text {
+	background: #ff5a4f;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.fwb-l-flaeche.ist-geraet:hover {
+	background: rgb(255 90 79 / 30%);
+}
+
+.fwb-l-flaeche.ist-gewaehlt {
+	border: 3px solid var(--fwb-gelb);
+	background: rgb(255 212 0 / 22%);
+	z-index: 3;
+	animation: fwb-l-puls 1.6s ease-in-out infinite;
+}
+
+.fwb-l-flaeche.ist-gewaehlt .fwb-l-flaeche-text {
+	background: var(--fwb-gelb);
+	color: #111;
+}
+
+.fwb-l-flaeche.ist-gedimmt {
+	opacity: 0.35;
+}
+
+.fwb-l-flaeche.ist-unsichtbar {
+	border-color: transparent;
+	background: transparent;
+}
+
+@keyframes fwb-l-puls {
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 rgb(255 212 0 / 70%);
+	}
+
+	50% {
+		box-shadow: 0 0 0 8px rgb(255 212 0 / 0%);
+	}
+}
+
+.fwb-l-schalter {
+	position: absolute;
+	z-index: 4;
+	width: 48px;
+	height: 48px;
+	transform: translate(-50%, -50%);
+	border: 3px solid var(--fwb-dunkel);
+	border-radius: 50%;
+	background: #fff;
+	color: var(--fwb-dunkel);
+	font-size: 26px;
+	line-height: 1;
+	display: grid;
+	place-items: center;
+	padding: 0;
+	box-shadow: 0 2px 10px rgb(0 0 0 / 50%);
+}
+
+.fwb-l-schalter:hover {
+	background: var(--fwb-gelb);
+}
+
+/* Rollladen: fährt beim Öffnen eines Fachs nach oben */
+.fwb-l-rollo {
+	position: absolute;
+	inset: 0;
+	z-index: 5;
+	background:
+		linear-gradient(to bottom, rgb(0 0 0 / 0%) 92%, rgb(0 0 0 / 25%)),
+		repeating-linear-gradient(to bottom, #d9dde0 0, #c9ced2 13px, #a9afb4 14px, #eef0f1 15px, #d9dde0 18px);
+	transform: translateY(0);
+	transition: transform 0.9s cubic-bezier(0.55, 0, 0.3, 1);
+	pointer-events: none;
+}
+
+.fwb-l-rollo.ist-offen {
+	transform: translateY(-102%);
+}
+
+.fwb-l-rollo-griff {
+	position: absolute;
+	left: 50%;
+	bottom: 6px;
+	width: 22%;
+	height: 10px;
+	transform: translateX(-50%);
+	border-radius: 5px;
+	background: #3b3f44;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.fwb-l-rollo {
+		display: none;
+	}
+
+	.fwb-l-flaeche.ist-gewaehlt {
+		animation: none;
+	}
+}
+
+/* ------------------------------ Ebene 3/4: Fach ------------------------------ */
+
+.fwb-l-fach {
+	flex: 1;
+	min-height: 0;
+	display: grid;
+	grid-template-rows: minmax(0, 1.15fr) minmax(0, 1fr);
+	position: relative;
+}
+
+.fwb-l-fach-bild {
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.fwb-l-fach-bild .fwb-l-bilder {
+	padding: 6px 8px;
+	justify-content: center;
+}
+
+.fwb-l-fach-liste {
+	min-height: 0;
+	overflow-y: auto;
+	background: #fff;
+	color: #1d1d1f;
+	padding: 10px 12px;
+	padding-bottom: calc(12px + env(safe-area-inset-bottom));
+}
+
+.fwb-l-ueberschrift {
+	margin: 0 0 8px;
+	font-size: 0.85em;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--fwb-grau);
+	font-family: var(--fwb-schrift);
+}
+
+.fwb-l-geraete {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.fwb-l-geraete li {
+	margin: 0;
+	padding: 0;
+}
+
+.fwb-l-geraet {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: 10px 8px;
+	border: none;
+	border-bottom: 1px solid #eceef0;
+	background: transparent;
+	color: inherit;
+	text-align: left;
+}
+
+.fwb-l-geraet:hover {
+	background: #f6f7f8;
+}
+
+.fwb-l-geraet.ist-gewaehlt {
+	background: #fff8d6;
+	box-shadow: inset 4px 0 0 var(--fwb-gelb);
+}
+
+.fwb-l-geraet-name {
+	font-weight: 600;
+}
+
+.fwb-l-menge {
+	display: inline-block;
+	min-width: 2em;
+	margin-right: 6px;
+	color: var(--fwb-rot);
+}
+
+.fwb-l-geraet-lage {
+	font-size: 0.88em;
+	color: var(--fwb-grau);
+}
+
+/* Gerätekarte: am Handy von unten, am Rechner rechts über der Liste */
+.fwb-l-karte-geraet {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	max-height: 62%;
+	overflow-y: auto;
+	z-index: 10;
+	padding: 6px 16px 16px;
+	padding-bottom: calc(16px + env(safe-area-inset-bottom));
+	background: #fff;
+	color: #1d1d1f;
+	border-radius: 16px 16px 0 0;
+	box-shadow: 0 -6px 24px rgb(0 0 0 / 35%);
+	animation: fwb-l-hoch 0.25s ease-out;
+}
+
+@keyframes fwb-l-hoch {
+	from {
+		transform: translateY(40px);
+		opacity: 0;
+	}
+
+	to {
+		transform: none;
+		opacity: 1;
+	}
+}
+
+.fwb-l-karte-kopf {
+	position: sticky;
+	top: -6px;
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	padding: 10px 0 6px;
+	background: #fff;
+}
+
+.fwb-l-karte-kopf h2 {
+	flex: 1;
+	margin: 0;
+	font-size: 1.3em;
+	line-height: 1.25;
+	color: var(--fwb-rot);
+	font-family: var(--fwb-schrift);
+}
+
+.fwb-l-schliessen {
+	width: 40px;
+	height: 40px;
+	flex: none;
+	border: none;
+	border-radius: 50%;
+	background: #eef0f2;
+	color: #111;
+	font-size: 26px;
+	line-height: 1;
+	padding: 0 0 3px;
+}
+
+.fwb-l-felder {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	gap: 4px 14px;
+	margin: 6px 0 10px;
+}
+
+.fwb-l-felder dt {
+	color: var(--fwb-grau);
+	margin: 0;
+}
+
+.fwb-l-felder dd {
+	margin: 0;
+	font-weight: 600;
+}
+
+.fwb-l-notiz,
+.fwb-l-beschreibung p {
+	margin: 0 0 8px;
+}
+
+.fwb-l-hinweise {
+	margin: 10px 0;
+	padding: 10px 12px;
+	border-left: 4px solid var(--fwb-rot);
+	background: #fdf1f3;
+	border-radius: 0 8px 8px 0;
+}
+
+.fwb-l-hinweise p {
+	margin: 4px 0 0;
+}
+
+.fwb-l-karte-geraet .fwb-l-tipp,
+.fwb-l-blatt .fwb-l-tipp {
+	color: var(--fwb-grau);
+}
+
+.fwb-l-karte-geraet .fwb-l-chip,
+.fwb-l-blatt .fwb-l-chip {
+	border-color: #c7ccd1;
+	background: #f4f5f6;
+	color: #1d1d1f;
+}
+
+.fwb-l-karte-geraet .fwb-l-chip:hover,
+.fwb-l-blatt .fwb-l-chip:hover {
+	background: #e8eaed;
+}
+
+.fwb-l-auch {
+	margin-top: 12px;
+	color: var(--fwb-grau);
+}
+
+@media (min-width: 900px) {
+	.fwb-l-fach {
+		grid-template-rows: minmax(0, 1fr);
+		grid-template-columns: minmax(0, 1fr) 360px;
+	}
+
+	.fwb-l-karte-geraet {
+		left: auto;
+		top: 0;
+		width: 360px;
+		max-height: none;
+		border-radius: 0;
+		box-shadow: -6px 0 24px rgb(0 0 0 / 30%);
+		animation-name: fwb-l-links;
+	}
+
+	@keyframes fwb-l-links {
+		from {
+			transform: translateX(30px);
+			opacity: 0;
+		}
+
+		to {
+			transform: none;
+			opacity: 1;
+		}
+	}
+}
+
+/* ------------------------------ Info und Suche ------------------------------ */
+
+.fwb-l-blatt {
+	flex: 1;
+	min-height: 0;
+	overflow-y: auto;
+	background: #fff;
+	color: #1d1d1f;
+	padding: 16px;
+	padding-bottom: calc(16px + env(safe-area-inset-bottom));
+}
+
+.fwb-l-blatt > * {
+	max-width: 720px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.fwb-l-info-foto img,
+.fwb-l-info-foto .fwb-l-ohne-foto {
+	display: block;
+	width: 100%;
+	max-height: 40vh;
+	object-fit: cover;
+	border-radius: 10px;
+	margin-bottom: 12px;
+}
+
+.fwb-l-info-kurz {
+	font-size: 1.05em;
+}
+
+.fwb-l-suchfeld {
+	display: block;
+	width: 100%;
+	padding: 12px 14px;
+	border: 2px solid #c7ccd1;
+	border-radius: 10px;
+	font: inherit;
+	font-size: 18px;
+	color: #111;
+	background: #fff;
+	margin-bottom: 12px;
+}
+
+.fwb-l-suchfeld:focus {
+	border-color: var(--fwb-rot);
+	outline: none;
+}
+
+.fwb-l-treffer ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.fwb-l-treffer li {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 10px 0;
+	border-bottom: 1px solid #eceef0;
+}

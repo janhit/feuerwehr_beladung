@@ -9,7 +9,7 @@ export function einrichten( konfiguration ) {
 	rest = konfiguration;
 }
 
-async function anfrage( pfad, optionen = {} ) {
+export async function anfrage( pfad, optionen = {} ) {
 	const antwort = await fetch( rest.wurzel + pfad, {
 		credentials: 'same-origin',
 		...optionen,

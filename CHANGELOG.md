@@ -1,5 +1,18 @@
 # Änderungen
 
+## 0.2.0 – noch nicht veröffentlicht
+
+Stufe 2: Lernseite und Fotoschutz.
+
+- Lernseite für Mitglieder per Shortcode `[feuerwehr_beladung]`: Fahrzeugübersicht, Fahrzeug im Vollbild mit antippbaren Fächern, Fach mit Rollladen-Animation, Markierungen und Geräteliste, Gerätekarte mit Einsatzhinweisen.
+- Schwenkwand und Auszug: Schalter auf dem Foto wechseln das Bild; ein gewähltes Gerät zeigt automatisch das Bild, auf dem es zu sehen ist.
+- Suche (auch nach anderen Bezeichnungen, „schluessel“ findet „Schlüssel“), Info mit Steckbrief, „Liegt auch in“.
+- Zurück-Taste, Pfeil oben links und Esc führen genau eine Ebene nach oben – auch bei direkt geöffneten Links.
+- Markierungen ein-/ausblendbar (zum Selbsttest), breite Fotos am Handy zum Wischen.
+- Fotoschutz: Fotos aus dem Fahrzeug-Editor liegen in einem eigenen Ordner mit Zufallsnamen und werden nur an angemeldete Nutzer ausgeliefert; Knopf „Schützen“ für andere Fotos; Selbsttest in den Einstellungen.
+- Einstellungen: Lernseite als Entwurf anlegen.
+- Abgemeldete sehen weder Daten noch Fotos (REST 401, Fotos 403).
+
 ## 0.1.0 – 2026-11-16
 
 Stufe 1: Grundgerüst und Backend.

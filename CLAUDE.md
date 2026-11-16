@@ -70,15 +70,20 @@ includes/
   class-editor.php            Metabox + Speichern + Skripte
   class-rest.php              REST fwb/v1 (bisher: Gerätekatalog)
   class-updater.php           Update aus GitHub-Releases (Filter update_plugins_github.com)
+  class-fotoschutz.php        Fotos in uploads/fwb-geschuetzt, Auslieferung nur angemeldet, Selbsttest
+  class-lern-daten.php        bereitet Fahrzeuge für die Lernseite auf (nur Nötiges, Bildadressen)
+  class-lernseite.php         Shortcode [feuerwehr_beladung], bindet assets/js/lernen ein
   class-protokoll.php         Protokoll-Tabelle und -Seite
   class-beispiel.php          Beispielfahrzeug
   class-einstellungen.php     Einstellungen (Admin)
   class-admin-menue.php       Untermenüs
 admin/js/editor/              ES-Module: main (Oberfläche), modell (reine Logik: Rechtecke, Übertragen, offenePunkte, Verlauf), markierer, katalog
 admin/css/editor.css
+assets/js/lernen/             Lernseite: app.js (Oberfläche, Historie), logik.js (rein, getestet)
+assets/css/lernen.css         Lernseite (nur Systemschrift, Theme-Knopfstile zurückgesetzt)
 assets/skizzen/               SVG-Skizzen für Fahrzeuge ohne Fotos
 tests/php/                    PHPUnit gegen echtes WordPress (eigene Test-Datenbank!)
-tests/js/                     node --test für admin/js/editor/modell.js
+tests/js/                     node --test für modell.js (Editor) und logik.js (Lernseite)
 bin/tests-auf-server.sh       Tests auf dem Test-Server
 bin/paket-bauen.sh            baut dist/feuerwehr-beladung.zip (git archive) und prüft es
 .gitattributes                export-ignore: was nicht ins ZIP gehört
@@ -92,6 +97,8 @@ JS-Module werden über `wp_register_script_module` mit Abhängigkeiten registrie
 ## Testen
 
 - **Testseite:** https://fwb-test.hittig.tech (Docker auf dem VPS des Auftraggebers, `/opt/fwb-test`, nginx + PHP-FPM wie die Vereinsseite). Testnutzer `fwb-admin`, `fwb-redakteur`, `fwb-mitglied`; Zugangsdaten nur auf dem Server in `/opt/fwb-test/zugangsdaten.txt`. Den Docker-Stack `oc-personen` auf dem VPS nie anfassen.
+- **Tests auf dem Server** laufen als Benutzer 33 (www-data), sonst gehören angelegte Ordner root.
+- **Lernseite auf der Testseite:** https://fwb-test.hittig.tech/beladung-lernen/
 - **Plugin auf der Testseite** liegt als normaler Ordner in `/opt/fwb-test/wordpress/wp-content/plugins/feuerwehr-beladung` (kein Docker-Mount, sonst gehen Updates nicht). `/opt/fwb-test/plugin` ist die Arbeitskopie für die Tests.
 - **Automatische Tests auf dem Server:** Plugin nach `/opt/fwb-test/plugin` kopieren, dann `sh /opt/fwb-test/plugin/bin/tests-auf-server.sh` (eigene Datenbank `wordpress_tests`).
 - **Lokal:** `node --test 'tests/js/*.test.js'`; PHPUnit mit `WP_ROOT=/pfad/zu/wordpress vendor/bin/phpunit` (nur gegen eine Test-Datenbank).
@@ -104,7 +111,7 @@ JS-Module werden über `wp_register_script_module` mit Abhängigkeiten registrie
 |---|---|---|
 | 1 | Grundgerüst, Datenmodell, Backend-Editor, Gerätekatalog, Protokoll, Beispielfahrzeug | fertig, in 0.1.0 |
 | 4 | Update aus GitHub (Update URI + Filter `update_plugins_github.com`), GitHub-Action baut ZIP mit Ordner `feuerwehr-beladung/` | fertig, in 0.1.0 |
-| 2 | Lernseite (Shortcode, vier Ebenen, Schwenkwand/Auszug, Suche, Steckbrief), Fotoschutz | offen |
+| 2 | Lernseite (Shortcode, vier Ebenen, Schwenkwand/Auszug, Suche, Steckbrief), Fotoschutz | fertig, Branch `stufe-2-lernseite` |
 | 3 | Quiz, Lernstand (Opt-in, pseudonymisiert + verschlüsselt), Datenschutz-Werkzeuge | offen |
 | 5 | Export/Import eines Fahrzeugs samt Fotos und Katalog-Geräten | offen |
 
@@ -114,6 +121,22 @@ JS-Module werden über `wp_register_script_module` mit Abhängigkeiten registrie
 - „Was fehlt noch?“ = `M.offenePunkte(dok)`; jeder Punkt hat ein Sprungziel. Neue Prüfungen dort ergänzen und in `tests/js` testen.
 - Fach-Reiter: Foto links, Geräte rechts (Container-Query ab 760 px), sonst untereinander. Geräteliste behält ihre Scrollposition über `zeichnen()`.
 - `zeichnen()` baut alles neu; bei Eingabefeldern `gemerkt( false, gruppe )` nutzen, damit der Fokus bleibt.
+
+## Lernseite
+
+- Shortcode `[feuerwehr_beladung]`. Abgemeldete sehen nur einen Anmeldeknopf (kein Nonce, keine Daten). Seiten mit dem Shortcode senden `nocache_headers()` und `DONOTCACHEPAGE`.
+- Daten kommen per REST: `GET fwb/v1/fahrzeuge` und `GET fwb/v1/fahrzeuge/<id>` (`permission_callback` = `darf_lernen`). Mitglieder sehen nur veröffentlichte Fahrzeuge, Bearbeiter zusätzlich Entwürfe.
+- `app.js` wird als Script-Modul ohne Import-Map geladen und holt `logik.js` per dynamischem Import mit derselben Versionsnummer.
+- Ebenen 1 Übersicht → 2 Fahrzeug → 3 Fach (oder Info/Suche) → 4 Gerät. Jede Ebene = ein Eintrag in der Browser-Historie (`state.tiefe`). Ansicht/Bild wechseln = `replaceState`. Direkt geöffnete Links bauen die Historie Ebene für Ebene auf.
+- **Nie selbst zurückspringen (`history.go`) und danach Einträge anlegen** – Chrome verwirft die dann. Quersprünge (`geheZu`) ersetzen den aktuellen Eintrag; veraltete Einträge darunter bekommen eine Umleitung im `sessionStorage` (`L.sprungUmleitungen`).
+- Der Browser im Testfenster der App lädt beim Zurückgehen die Seite neu – Historie-Abläufe dort nur eingeschränkt testbar; echte Browser verhalten sich anders.
+
+## Fotoschutz
+
+- Geschützt wird ein Anhang, indem alle Dateien nach `uploads/fwb-geschuetzt/<32 Zufallszeichen>/` verschoben werden (`_fwb_geschuetzt` = 1). Adressen: `/?fwb_bild=<id>&d=/<datei>` – die Datei steht am Ende hinter „/“, damit WordPress die Adressen der anderen Größen per `str_replace` bilden kann.
+- Automatisch nur für Fotos, die zum Fahrzeug hochgeladen wurden (`post_parent` = Fahrzeug, deshalb `wp_enqueue_media( [ 'post' => ID ] )`). Andere nur per Knopf „Schützen“ im Editor (REST `POST fwb/v1/fotos/<id>/schuetzen`), weil sie in Beiträgen stecken könnten.
+- Medien-REST und Anhang-Seiten verraten geschützte Fotos nicht. Beim Löschen wird der leere Zufallsordner entfernt.
+- nginx/openresty beachtet `.htaccess` nicht → Selbsttest in den Einstellungen meldet das; Regel für den Hoster: `location ^~ /wp-content/uploads/fwb-geschuetzt/ { deny all; }` (auf der Testseite eingetragen).
 
 ## Updates und Releases
 
@@ -138,7 +161,6 @@ JS-Module werden über `wp_register_script_module` mit Abhängigkeiten registrie
 
 ## Offene Punkte
 
-- Lernseite: Fotos in hoher Auflösung ausliefern (der Editor nutzt nur „large“ = 1024 px).
 - Hinweis „vorübergehend geändert“ an einem Gerät (Wunsch aus dem Vereinsalltag), passt zu „Neu seit …“.
 - Protokoll enthält Namen von Bearbeitern → in Stufe 3 bei den Datenschutz-Werkzeugen berücksichtigen.
 - Später: Export/Import (zuerst), PWA mit eigener Ansicht ohne Theme, weitere Quizarten, „Neu seit …“, QR-Codes.

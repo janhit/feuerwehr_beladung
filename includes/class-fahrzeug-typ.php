@@ -106,8 +106,7 @@ final class Fahrzeug_Typ {
 		$meldungen[ self::TYP ] = array(
 			1  => 'Fahrzeug gespeichert.',
 			4  => 'Fahrzeug gespeichert.',
-			// Ab Stufe 2 (Lernseite): „Mitglieder sehen es jetzt auf der Lernseite.“
-			6  => 'Fahrzeug veröffentlicht.',
+			6  => 'Fahrzeug veröffentlicht. Angemeldete Mitglieder sehen es jetzt auf der Lernseite.',
 			7  => 'Fahrzeug gespeichert.',
 			8  => 'Fahrzeug eingereicht.',
 			10 => 'Entwurf gespeichert. Mitglieder sehen das Fahrzeug noch nicht.',

@@ -161,10 +161,52 @@ function starten( daten ) {
 		rahmen.on( 'select', () => {
 			const a = rahmen.state().get( 'selection' ).first().toJSON();
 			const groesse = ( a.sizes && ( a.sizes.large || a.sizes.full ) ) || a;
-			fotos[ a.id ] = { url: groesse.url, b: groesse.width, h: groesse.height };
+			fotos[ a.id ] = {
+				url: groesse.url,
+				b: groesse.width,
+				h: groesse.height,
+				geschuetzt: false,
+				// Hier hochgeladen (gehört zu diesem Fahrzeug) → wird beim Speichern geschützt.
+				automatisch: Number( a.uploadedTo ) === Number( daten.post_id ),
+			};
 			beiWahl( a.id );
 		} );
 		rahmen.open();
+	}
+
+	function schutzHinweis( fotoId ) {
+		const foto = fotos[ fotoId ];
+		if ( ! foto ) {
+			return null;
+		}
+		if ( foto.geschuetzt ) {
+			return el( 'span', { class: 'fwb-schutz ist-geschuetzt', title: 'Nur für angemeldete Mitglieder abrufbar.', text: '🔒 geschützt' } );
+		}
+		if ( foto.automatisch ) {
+			return el( 'span', { class: 'fwb-schutz', title: 'Das Foto wurde hier hochgeladen und wird beim Speichern in den geschützten Ordner verschoben.', text: '🔒 wird beim Speichern geschützt' } );
+		}
+		return el(
+			'span',
+			{ class: 'fwb-schutz ist-offen' },
+			'⚠ nicht geschützt – ohne Anmeldung abrufbar. ',
+			knopf( 'Schützen', async ( e ) => {
+				if ( ! window.confirm( 'Foto in den geschützten Ordner verschieben?\n\nDanach ist es nur noch für angemeldete Nutzer abrufbar. Falls das Foto auch in einem Beitrag oder einer Seite steckt, wird es dort für Besucher ohne Anmeldung nicht mehr angezeigt.' ) ) {
+					return;
+				}
+				e.target.disabled = true;
+				try {
+					const antwort = await Katalog.anfrage( 'fotos/' + fotoId + '/schuetzen', { method: 'POST' } );
+					fotos[ fotoId ] = { ...foto, url: antwort.url || foto.url, geschuetzt: true };
+					meldung( 'Foto ist jetzt geschützt.' );
+					zeichnen();
+				} catch ( fehler ) {
+					e.target.disabled = false;
+					window.alert( fehler.message );
+				}
+			}, 'button button-small' ),
+			' ',
+			el( 'span', { class: 'description', text: 'Tipp: Fotos direkt hier im Fahrzeug hochladen, dann werden sie automatisch geschützt.' } )
+		);
 	}
 
 	function fotoFeld( fotoId, beiAenderung, { skizze = '' } = {} ) {
@@ -176,7 +218,8 @@ function starten( daten ) {
 				? el( 'img', { src: foto.url, alt: '', class: 'fwb-foto-vorschau' } )
 				: el( 'span', { class: 'description', text: skizze ? 'Skizze statt Foto.' : 'Kein Foto gewählt.' } ),
 			knopf( foto ? 'Foto ändern' : 'Foto wählen oder hochladen', () => fotoWaehlen( ( id ) => beiAenderung( id ) ), foto ? 'button button-small' : 'button' ),
-			foto ? knopf( 'Foto entfernen', () => beiAenderung( 0 ), 'button-link fwb-gefahr' ) : null
+			foto ? knopf( 'Foto entfernen', () => beiAenderung( 0 ), 'button-link fwb-gefahr' ) : null,
+			foto ? schutzHinweis( fotoId ) : null
 		);
 	}
 

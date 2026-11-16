@@ -16,7 +16,9 @@ echo "== PHPUnit"
 # Kopie außerhalb des Web-Ordners, damit vendor/ nie öffentlich erreichbar ist.
 rm -rf /opt/fwb-test/testlauf && cp -a /opt/fwb-test/plugin /opt/fwb-test/testlauf
 docker run --rm -v /opt/fwb-test/testlauf:/app -w /app composer:2 composer install --no-interaction --no-progress -q
-docker run --rm --network "$NETZ" \
+# Als WordPress-Benutzer (www-data) testen, damit angelegte Ordner der Testseite gehören.
+chown -R 33:33 /opt/fwb-test/testlauf
+docker run --rm --user 33:33 --network "$NETZ" \
   -v /opt/fwb-test/wordpress:/var/www/html -v /opt/fwb-test/testlauf:/app -w /app \
   -e WORDPRESS_DB_HOST=db -e WORDPRESS_DB_NAME=wordpress_tests -e WORDPRESS_DB_USER="$MARIADB_USER" -e WORDPRESS_DB_PASSWORD="$MARIADB_PASSWORD" \
   -e WP_ROOT=/var/www/html wordpress:php8.3-fpm php vendor/bin/phpunit "$@"

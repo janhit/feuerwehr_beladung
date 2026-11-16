@@ -2,8 +2,10 @@
 /**
  * Eigene REST-Schnittstelle. Jede Route prüft die Rechte selbst.
  *
- * Stufe 1: nur der Gerätekatalog für den Editor.
- * Die Lernseite bekommt ihre Routen in Stufe 2 (nur für angemeldete Nutzer).
+ * - /geraete            Gerätekatalog für den Editor (Bearbeiter)
+ * - /fotos/<id>/schuetzen Foto in den geschützten Ordner verschieben (Bearbeiter)
+ * - /fahrzeuge          Lernseite: Übersicht (angemeldete Mitglieder)
+ * - /fahrzeuge/<id>     Lernseite: ein Fahrzeug (angemeldete Mitglieder)
  *
  * @package FeuerwehrBeladung
  */
@@ -18,6 +20,7 @@ final class Rest {
 
 	public static function haken(): void {
 		add_action( 'rest_api_init', array( self::class, 'routen' ) );
+		add_action( 'rest_api_init', array( self::class, 'lern_routen' ) );
 	}
 
 	public static function routen(): void {
@@ -54,6 +57,69 @@ final class Rest {
 						),
 					),
 				),
+			)
+		);
+	}
+
+	public static function lern_routen(): void {
+		register_rest_route(
+			self::NAMENSRAUM,
+			'/fahrzeuge',
+			array(
+				'methods'             => \WP_REST_Server::READABLE,
+				'callback'            => static fn() => new \WP_REST_Response( Lern_Daten::fahrzeuge() ),
+				'permission_callback' => array( Plugin::class, 'darf_lernen' ),
+			)
+		);
+		register_rest_route(
+			self::NAMENSRAUM,
+			'/fahrzeuge/(?P<id>\d+)',
+			array(
+				'methods'             => \WP_REST_Server::READABLE,
+				'callback'            => array( self::class, 'fahrzeug' ),
+				'permission_callback' => array( Plugin::class, 'darf_lernen' ),
+				'args'                => array(
+					'id' => array( 'type' => 'integer', 'required' => true ),
+				),
+			)
+		);
+		register_rest_route(
+			self::NAMENSRAUM,
+			'/fotos/(?P<id>\d+)/schuetzen',
+			array(
+				'methods'             => \WP_REST_Server::CREATABLE,
+				'callback'            => array( self::class, 'foto_schuetzen' ),
+				'permission_callback' => static fn( \WP_REST_Request $a ) => Plugin::darf_bearbeiten() && current_user_can( 'upload_files' ),
+				'args'                => array(
+					'id' => array( 'type' => 'integer', 'required' => true ),
+				),
+			)
+		);
+	}
+
+	public static function fahrzeug( \WP_REST_Request $anfrage ) {
+		$daten = Lern_Daten::fahrzeug( (int) $anfrage['id'] );
+		if ( null === $daten ) {
+			return new \WP_Error( 'fwb_nicht_gefunden', 'Dieses Fahrzeug gibt es nicht (mehr).', array( 'status' => 404 ) );
+		}
+		return new \WP_REST_Response( $daten );
+	}
+
+	public static function foto_schuetzen( \WP_REST_Request $anfrage ) {
+		$id       = (int) $anfrage['id'];
+		$ergebnis = Fotoschutz::schuetzen( $id );
+		if ( is_wp_error( $ergebnis ) ) {
+			$ergebnis->add_data( array( 'status' => 400 ) );
+			return $ergebnis;
+		}
+		Protokoll::eintragen( 'foto', $id, 'geschützt', 'Foto „' . get_the_title( $id ) . '“ in den geschützten Ordner verschoben' );
+		$bild = wp_get_attachment_image_src( $id, 'large' );
+		return new \WP_REST_Response(
+			array(
+				'url'        => $bild ? $bild[0] : '',
+				'b'          => $bild ? $bild[1] : 0,
+				'h'          => $bild ? $bild[2] : 0,
+				'geschuetzt' => true,
 			)
 		);
 	}
