@@ -57,6 +57,7 @@ final class Fahrzeug_Typ {
 		add_filter( 'manage_' . self::TYP . '_posts_columns', array( self::class, 'spalten' ) );
 		add_action( 'manage_' . self::TYP . '_posts_custom_column', array( self::class, 'spalte_ausgeben' ), 10, 2 );
 		add_filter( 'post_updated_messages', array( self::class, 'meldungen' ) );
+		add_action( 'post_submitbox_misc_actions', array( self::class, 'hinweis_sichtbarkeit' ) );
 	}
 
 	public static function spalten( array $spalten ): array {
@@ -86,11 +87,27 @@ final class Fahrzeug_Typ {
 		}
 	}
 
+	/**
+	 * Im Kasten „Veröffentlichen“: WordPress' Zeile „Sichtbarkeit: Öffentlich“
+	 * wird per CSS ausgeblendet (sie klingt nach „für alle im Internet“).
+	 * Stattdessen steht hier, was Entwurf und Veröffentlichen wirklich bedeuten.
+	 */
+	public static function hinweis_sichtbarkeit( \WP_Post $post ): void {
+		if ( self::TYP !== $post->post_type ) {
+			return;
+		}
+		echo '<div class="misc-pub-section fwb-sichtbarkeit">';
+		echo '<span class="dashicons dashicons-lock" aria-hidden="true"></span> ';
+		echo esc_html( 'Entwurf: nur Redakteure und Administratoren sehen das Fahrzeug. Veröffentlicht: alle angemeldeten Mitglieder. Ohne Anmeldung ist es nie sichtbar.' );
+		echo '</div>';
+	}
+
 	public static function meldungen( array $meldungen ): array {
 		$meldungen[ self::TYP ] = array(
 			1  => 'Fahrzeug gespeichert.',
 			4  => 'Fahrzeug gespeichert.',
-			6  => 'Fahrzeug veröffentlicht. Mitglieder sehen es jetzt auf der Lernseite.',
+			// Ab Stufe 2 (Lernseite): „Mitglieder sehen es jetzt auf der Lernseite.“
+			6  => 'Fahrzeug veröffentlicht.',
 			7  => 'Fahrzeug gespeichert.',
 			8  => 'Fahrzeug eingereicht.',
 			10 => 'Entwurf gespeichert. Mitglieder sehen das Fahrzeug noch nicht.',

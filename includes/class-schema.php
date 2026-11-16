@@ -13,7 +13,7 @@
  *  faecher:    [ {id, kuerzel, name,
  *                 plaetze: [ {id, geraet, menge, lage, notiz} ],
  *                 bilder:  [ {id, titel, foto_id, skizze,
- *                             markierungen: [ {id, platz_id, x, y, b, h} ],
+ *                             markierungen: [ {id, platz_id, x, y, b, h, notiz} ],
  *                             schalter:     [ {id, art, ziel_bild_id, x, y} ] } ] } ]
  *
  * "geraet" ist die feste Kennung (uid) eines Eintrags im Gerätekatalog.
@@ -238,7 +238,7 @@ final class Schema {
 						$this->hinweis( 'Eine Markierung in ' . $fach['kuerzel'] . ' gehörte zu keinem Gerät des Fachs und wurde entfernt.' );
 						continue;
 					}
-					$bild['markierungen'][] = array( 'id' => $this->id( $m['id'] ?? '', 'm' ), 'platz_id' => $platz_id ) + $this->rechteck( $m );
+					$bild['markierungen'][] = array( 'id' => $this->id( $m['id'] ?? '', 'm' ), 'platz_id' => $platz_id ) + $this->rechteck( $m ) + array( 'notiz' => $this->text( $m['notiz'] ?? '', 60 ) );
 				}
 				foreach ( $this->liste( $b['schalter'] ?? null, 'schalter' ) as $sch ) {
 					$ziel = is_string( $sch['ziel_bild_id'] ?? null ) ? $sch['ziel_bild_id'] : '';

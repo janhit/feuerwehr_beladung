@@ -125,6 +125,19 @@ final class SchemaTest extends TestCase {
 		$this->assertCount( 1, $dok['faecher'][0]['plaetze'] );
 	}
 
+	public function test_mehrere_stellen_je_geraet_mit_notiz(): void {
+		$fach = $this->fach();
+		$fach['bilder'][0]['markierungen'][] = array( 'id' => 'm_mark02', 'platz_id' => 'p_platz1', 'x' => 60, 'y' => 60, 'b' => 10, 'h' => 10, 'notiz' => "  <b>unten</b>\nrechts  " );
+		$fach['bilder'][0]['markierungen'][] = array( 'id' => 'm_mark03', 'platz_id' => 'p_platz1', 'x' => 30, 'y' => 30, 'b' => 10, 'h' => 10, 'notiz' => str_repeat( 'x', 200 ) );
+		[ $dok, $hinweise ] = $this->bereinigen( array( 'faecher' => array( $fach ) ) );
+		$marken = $dok['faecher'][0]['bilder'][0]['markierungen'];
+		$this->assertSame( array(), $hinweise );
+		$this->assertCount( 3, $marken, 'dasselbe Gerät darf mehrfach auf einem Bild markiert sein' );
+		$this->assertSame( '', $marken[0]['notiz'] );
+		$this->assertSame( 'unten rechts', $marken[1]['notiz'] );
+		$this->assertSame( 60, mb_strlen( $marken[2]['notiz'] ) );
+	}
+
 	public function test_gleiches_geraet_in_zwei_faechern_ist_erlaubt(): void {
 		$fach2 = $this->fach( array( 'id' => 'f_fach02', 'kuerzel' => 'G3' ) );
 		$fach2['plaetze'][0]['id'] = 'p_platz9';
