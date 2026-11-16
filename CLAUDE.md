@@ -69,6 +69,7 @@ includes/
   class-geraete-katalog.php   Beitragstyp Gerät, Suche, Löschschutz
   class-editor.php            Metabox + Speichern + Skripte
   class-rest.php              REST fwb/v1 (bisher: Gerätekatalog)
+  class-updater.php           Update aus GitHub-Releases (Filter update_plugins_github.com)
   class-protokoll.php         Protokoll-Tabelle und -Seite
   class-beispiel.php          Beispielfahrzeug
   class-einstellungen.php     Einstellungen (Admin)
@@ -79,7 +80,10 @@ assets/skizzen/               SVG-Skizzen für Fahrzeuge ohne Fotos
 tests/php/                    PHPUnit gegen echtes WordPress (eigene Test-Datenbank!)
 tests/js/                     node --test für admin/js/editor/modell.js
 bin/tests-auf-server.sh       Tests auf dem Test-Server
-.github/workflows/tests.yml   Tests bei jedem Push
+bin/paket-bauen.sh            baut dist/feuerwehr-beladung.zip (git archive) und prüft es
+.gitattributes                export-ignore: was nicht ins ZIP gehört
+.github/workflows/tests.yml   Tests bei jedem Push (auch von release.yml aufgerufen)
+.github/workflows/release.yml Tag v* → Tests → ZIP → GitHub-Release
 ```
 
 JS-Module werden über `wp_register_script_module` mit Abhängigkeiten registriert
@@ -88,6 +92,7 @@ JS-Module werden über `wp_register_script_module` mit Abhängigkeiten registrie
 ## Testen
 
 - **Testseite:** https://fwb-test.hittig.tech (Docker auf dem VPS des Auftraggebers, `/opt/fwb-test`, nginx + PHP-FPM wie die Vereinsseite). Testnutzer `fwb-admin`, `fwb-redakteur`, `fwb-mitglied`; Zugangsdaten nur auf dem Server in `/opt/fwb-test/zugangsdaten.txt`. Den Docker-Stack `oc-personen` auf dem VPS nie anfassen.
+- **Plugin auf der Testseite** liegt als normaler Ordner in `/opt/fwb-test/wordpress/wp-content/plugins/feuerwehr-beladung` (kein Docker-Mount, sonst gehen Updates nicht). `/opt/fwb-test/plugin` ist die Arbeitskopie für die Tests.
 - **Automatische Tests auf dem Server:** Plugin nach `/opt/fwb-test/plugin` kopieren, dann `sh /opt/fwb-test/plugin/bin/tests-auf-server.sh` (eigene Datenbank `wordpress_tests`).
 - **Lokal:** `node --test 'tests/js/*.test.js'`; PHPUnit mit `WP_ROOT=/pfad/zu/wordpress vendor/bin/phpunit` (nur gegen eine Test-Datenbank).
 - Im Testbetrieb (`WP_DEBUG`) hängt `Plugin::datei_version()` das Änderungsdatum an CSS/JS, damit Browser nichts Altes zeigen.
@@ -97,11 +102,23 @@ JS-Module werden über `wp_register_script_module` mit Abhängigkeiten registrie
 
 | Stufe | Inhalt | Stand |
 |---|---|---|
-| 1 | Grundgerüst, Datenmodell, Backend-Editor, Gerätekatalog, Protokoll, Beispielfahrzeug | in Arbeit (Branch `stufe-1-grundgeruest`) |
-| 4 | Update aus GitHub (Update URI + Filter `update_plugins_github.com`), GitHub-Action baut ZIP mit Ordner `feuerwehr-beladung/` | als Nächstes |
+| 1 | Grundgerüst, Datenmodell, Backend-Editor, Gerätekatalog, Protokoll, Beispielfahrzeug | fertig, PR #1 (Branch `stufe-1-grundgeruest`) |
+| 4 | Update aus GitHub (Update URI + Filter `update_plugins_github.com`), GitHub-Action baut ZIP mit Ordner `feuerwehr-beladung/` | fertig, Branch `stufe-4-update` |
 | 2 | Lernseite (Shortcode, vier Ebenen, Schwenkwand/Auszug, Suche, Steckbrief), Fotoschutz | offen |
 | 3 | Quiz, Lernstand (Opt-in, pseudonymisiert + verschlüsselt), Datenschutz-Werkzeuge | offen |
 | 5 | Export/Import eines Fahrzeugs samt Fotos und Katalog-Geräten | offen |
+
+## Updates und Releases
+
+- WordPress fragt wegen `Update URI: https://github.com/…` nicht wordpress.org, sondern den Filter `update_plugins_github.com` → `Updater::update_pruefen()` holt `releases/latest` von der GitHub-API (6 h zwischengespeichert, bei Fehlern 30 min) und bietet das Update an, wenn die Version höher ist und das Release die Datei **`feuerwehr-beladung.zip`** hat. Pakete werden nur von `https://github.com/janhit/feuerwehr_beladung/releases/download/` angenommen.
+- „Nach Updates suchen“ (Plugin-Liste und Einstellungen, nur Admins) fragt sofort neu. Das Update selbst ist WordPress' eigener Knopf „Jetzt aktualisieren“.
+- `upgrader_source_selection`: Heißt der entpackte Ordner anders, wird er in `feuerwehr-beladung/` umbenannt; fehlt `feuerwehr-beladung.php`, wird abgebrochen.
+- Für Tests lassen sich Quelle und erlaubte Paket-Adresse umbiegen: Filter `fwb_update_api_url`, `fwb_update_paket_praefix`.
+
+**Release machen (nur nach Freigabe durch den Auftraggeber!):**
+1. Version in `feuerwehr-beladung.php` an zwei Stellen erhöhen (Kopf `Version:` und `FWB_VERSION`).
+2. In `CHANGELOG.md` die Überschrift `## X.Y.Z – JJJJ-MM-TT` setzen (nicht „noch nicht veröffentlicht“).
+3. Auf `main` committen, Tag `vX.Y.Z` setzen und pushen. `release.yml` prüft alles (`bin/paket-bauen.sh vX.Y.Z`), baut das ZIP und legt das Release mit dem CHANGELOG-Abschnitt als Text an.
 
 ## Entscheidungen (mit dem Auftraggeber abgestimmt)
 

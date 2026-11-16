@@ -13,3 +13,9 @@ Stufe 1: Grundgerüst und Backend.
 - Protokoll und die letzten 10 Stände je Fahrzeug.
 - Beispielfahrzeug „HLF Beispiel“ mit Skizzen statt Fotos.
 - Rechte: Redakteure bearbeiten, Administratoren verwalten.
+
+Stufe 4: Update aus GitHub.
+
+- Neue Versionen aus den GitHub-Releases erscheinen unter „Plugins“ mit dem Knopf „Jetzt aktualisieren“.
+- „Nach Updates suchen“ in der Plugin-Liste und in den Einstellungen (nur Administratoren).
+- Release-Paket wird automatisch gebaut und geprüft, sobald eine Version freigegeben ist.

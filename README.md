@@ -28,7 +28,18 @@ am Handy, welches Gerät in welchem Gerätefach der Fahrzeuge liegt.
 2. In WordPress: **Plugins → Installieren → Plugin hochladen**.
 3. Aktivieren. Im Menü erscheint **Beladung**.
 
-Daten (Fahrzeuge, Fotos, Lernstände) bleiben bei Updates immer erhalten.
+## Updates
+
+Neue Versionen erscheinen als Release auf GitHub. WordPress zeigt sie wie jedes andere
+Plugin-Update unter **Plugins** an („Jetzt aktualisieren“). Mit **Nach Updates suchen**
+(in der Plugin-Liste oder unter **Beladung → Einstellungen**) lässt sich sofort nachsehen.
+
+Daten (Fahrzeuge, Fotos, Lernstände) bleiben bei Updates immer erhalten: Ein Update ersetzt
+nur den Programmcode im Plugin-Ordner.
+
+Für die Update-Prüfung fragt der Server (nicht der Browser der Mitglieder) etwa alle
+6 Stunden bei `api.github.com` nach der neuesten Version. Dabei werden keine Nutzerdaten
+übertragen.
 
 ## Entwicklung
 
