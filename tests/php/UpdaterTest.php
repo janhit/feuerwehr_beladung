@@ -72,7 +72,7 @@ final class UpdaterTest extends TestCase {
 		$r = Updater::aufbereiten( self::release( 'v1.2.3' ) );
 		$this->assertSame( '1.2.3', $r['version'] );
 		$this->assertStringEndsWith( '/v1.2.3/feuerwehr-beladung.zip', $r['paket'] );
-		$this->assertSame( '2026-11-20', $r['datum'] );
+		$this->assertSame( '2026-11-20 10:00:00 GMT', $r['datum'] );
 
 		$this->assertNull( Updater::aufbereiten( self::release( 'v1.2.3', array( 'draft' => true ) ) ) );
 		$this->assertNull( Updater::aufbereiten( self::release( 'v1.2.3', array( 'prerelease' => true ) ) ) );

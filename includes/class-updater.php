@@ -125,8 +125,14 @@ final class Updater {
 			'paket'   => $paket,
 			'seite'   => $seite,
 			'text'    => mb_substr( (string) ( $daten['body'] ?? '' ), 0, 20000 ),
-			'datum'   => substr( (string) ( $daten['published_at'] ?? '' ), 0, 10 ),
+			// WordPress zeigt daraus „vor 3 Tagen“ an, braucht also die Uhrzeit (UTC).
+			'datum'   => self::zeitpunkt( (string) ( $daten['published_at'] ?? '' ) ),
 		);
+	}
+
+	private static function zeitpunkt( string $iso ): string {
+		$zeit = strtotime( $iso );
+		return $zeit ? gmdate( 'Y-m-d H:i:s', $zeit ) . ' GMT' : '';
 	}
 
 	/**
