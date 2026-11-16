@@ -24,7 +24,7 @@ am Handy, welches Gerät in welchem Gerätefach der Fahrzeuge liegt.
 
 ## Installation
 
-1. Unter **Releases** die Datei `feuerwehr-beladung.zip` herunterladen (sobald es Releases gibt).
+1. Unter [Releases](https://github.com/janhit/feuerwehr_beladung/releases) beim neuesten Release die Datei **`feuerwehr-beladung.zip`** herunterladen (nicht „Source code“).
 2. In WordPress: **Plugins → Installieren → Plugin hochladen**.
 3. Aktivieren. Im Menü erscheint **Beladung**.
 

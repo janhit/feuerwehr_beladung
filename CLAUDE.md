@@ -102,8 +102,8 @@ JS-Module werden über `wp_register_script_module` mit Abhängigkeiten registrie
 
 | Stufe | Inhalt | Stand |
 |---|---|---|
-| 1 | Grundgerüst, Datenmodell, Backend-Editor, Gerätekatalog, Protokoll, Beispielfahrzeug | fertig, PR #1 (Branch `stufe-1-grundgeruest`) |
-| 4 | Update aus GitHub (Update URI + Filter `update_plugins_github.com`), GitHub-Action baut ZIP mit Ordner `feuerwehr-beladung/` | fertig, Branch `stufe-4-update` |
+| 1 | Grundgerüst, Datenmodell, Backend-Editor, Gerätekatalog, Protokoll, Beispielfahrzeug | fertig, in 0.1.0 |
+| 4 | Update aus GitHub (Update URI + Filter `update_plugins_github.com`), GitHub-Action baut ZIP mit Ordner `feuerwehr-beladung/` | fertig, in 0.1.0 |
 | 2 | Lernseite (Shortcode, vier Ebenen, Schwenkwand/Auszug, Suche, Steckbrief), Fotoschutz | offen |
 | 3 | Quiz, Lernstand (Opt-in, pseudonymisiert + verschlüsselt), Datenschutz-Werkzeuge | offen |
 | 5 | Export/Import eines Fahrzeugs samt Fotos und Katalog-Geräten | offen |
