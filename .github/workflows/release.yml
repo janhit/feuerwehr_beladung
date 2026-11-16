@@ -1,0 +1,35 @@
+name: Release
+
+# Startet, wenn ein Tag wie v0.2.0 gepusht wird. Prüft erst alle Tests,
+# baut dann feuerwehr-beladung.zip und legt das GitHub-Release an.
+# Danach bieten alle Seiten mit dem Plugin das Update an.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yml
+
+  release:
+    name: Release anlegen
+    needs: tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: Paket bauen und prüfen
+        run: sh bin/paket-bauen.sh "$GITHUB_REF_NAME"
+      - name: Release anlegen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/feuerwehr-beladung.zip \
+            --verify-tag \
+            --title "Version ${GITHUB_REF_NAME#v}" \
+            --notes-file dist/release-notizen.md

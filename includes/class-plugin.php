@@ -20,6 +20,8 @@ final class Plugin {
 		Geraete_Katalog::haken();
 		Protokoll::haken();
 		Rest::haken();
+		// Auch außerhalb des Admin-Bereichs: WordPress prüft Updates per Cron.
+		Updater::haken();
 
 		if ( is_admin() ) {
 			Admin_Menue::haken();

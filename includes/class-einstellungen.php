@@ -47,7 +47,7 @@ final class Einstellungen {
 		echo 'Alle Fahrzeuge, Geräte und das Protokoll ebenfalls löschen</label>';
 		echo '<p class="description">Ausgeschaltet (empfohlen) bleiben alle Daten erhalten, auch wenn das Plugin gelöscht wird. Updates löschen nie Daten.</p>';
 		echo '</td></tr>';
-		echo '<tr><th scope="row">Version</th><td>' . esc_html( FWB_VERSION ) . '</td></tr>';
+		echo '<tr><th scope="row">Version und Updates</th><td>' . Updater::stand_html() . '</td></tr>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- in stand_html() maskiert.
 		echo '</table>';
 		submit_button( 'Speichern' );
 		echo '</form></div>';
