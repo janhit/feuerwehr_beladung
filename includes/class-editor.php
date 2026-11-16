@@ -79,7 +79,14 @@ final class Editor {
 		foreach ( array_unique( array_filter( $ids ) ) as $id ) {
 			$bild = wp_get_attachment_image_src( $id, 'large' );
 			if ( $bild ) {
-				$fotos[ $id ] = array( 'url' => $bild[0], 'b' => $bild[1], 'h' => $bild[2] );
+				$fotos[ $id ] = array(
+					'url'        => $bild[0],
+					'b'          => $bild[1],
+					'h'          => $bild[2],
+					'geschuetzt' => Fotoschutz::ist_geschuetzt( $id ),
+					// Zum Fahrzeug hochgeladen → wird beim Speichern automatisch geschützt.
+					'automatisch' => Fotoschutz::automatisch_erlaubt( $id ),
+				);
 			}
 		}
 
@@ -105,6 +112,7 @@ final class Editor {
 		return (string) wp_json_encode(
 			array(
 				'dokument'  => $dok,
+				'post_id'   => $post_id,
 				'fotos'     => $fotos,
 				'skizzen'   => $skizzen,
 				'katalog'   => $katalog,
@@ -126,7 +134,8 @@ final class Editor {
 		if ( ! $bildschirm || Fahrzeug_Typ::TYP !== $bildschirm->post_type || ! in_array( $seite, array( 'post.php', 'post-new.php' ), true ) ) {
 			return;
 		}
-		wp_enqueue_media();
+		// Mit Fahrzeug: Fotos, die hier hochgeladen werden, gehören zum Fahrzeug und werden geschützt.
+		wp_enqueue_media( array( 'post' => (int) get_the_ID() ) );
 		wp_enqueue_style( 'fwb-editor', FWB_URL . 'admin/css/editor.css', array(), Plugin::datei_version( 'admin/css/editor.css' ) );
 		// Jedes Modul mit seinen Abhängigkeiten registrieren; WordPress baut daraus
 		// die Import-Map (mit Versionsnummer, damit nach Updates nichts Altes im Cache bleibt).
@@ -173,6 +182,11 @@ final class Editor {
 		}
 		if ( $ergebnis['hinweise'] ) {
 			self::hinweis_merken( $ergebnis['hinweise'] );
+		}
+		// Hier hochgeladene Fotos in den geschützten Ordner verschieben.
+		$schutz = Fotoschutz::dokument_schuetzen( $ergebnis['dokument'] );
+		if ( $schutz['geschuetzt'] ) {
+			Protokoll::eintragen( 'fahrzeug', $post_id, 'Fotos geschützt', $schutz['geschuetzt'] . ' Foto(s) von „' . $post->post_title . '“ in den geschützten Ordner verschoben' );
 		}
 	}
 

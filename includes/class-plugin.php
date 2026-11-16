@@ -22,6 +22,8 @@ final class Plugin {
 		Rest::haken();
 		// Auch außerhalb des Admin-Bereichs: WordPress prüft Updates per Cron.
 		Updater::haken();
+		Fotoschutz::haken();
+		Lernseite::haken();
 
 		if ( is_admin() ) {
 			Admin_Menue::haken();
